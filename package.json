@@ -30,7 +30,13 @@
         "build:mp-weixin": "uni build -p mp-weixin",
         "build:quickapp-webview": "uni build -p quickapp-webview",
         "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
-        "build:quickapp-webview-union": "uni build -p quickapp-webview-union"
+        "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
+        "eslint:comment": "使用 ESLint 检查并自动修复 src 目录下所有扩展名为 .js 和 .vue 的文件",
+        "eslint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+        "prettier:comment": "自动格式化当前目录下的所有文件",
+        "prettier": "prettier --write",
+        "commit:comment": "引导设置规范化的提交信息",
+        "commit": "git-cz"
     },
     "dependencies": {
         "@dcloudio/uni-app": "3.0.0-3090520231028001",

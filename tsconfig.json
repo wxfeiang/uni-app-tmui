@@ -26,9 +26,5 @@
     "./src/*.d.ts",
     "./src/**/*.ts",
     "src/**/*.tsx",
-  ],
-  "compilerOptions": {
-    // 在.tsx文件里支持JSX
-    "jsx": "preserve",
- }
+  ]
 }
