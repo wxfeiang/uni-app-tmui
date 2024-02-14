@@ -6,6 +6,8 @@
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -22,6 +24,11 @@
     "./src/**/*.nvue",
     "./src/*.ts",
     "./src/*.d.ts",
-    "./src/**/*.ts"
-  ]
+    "./src/**/*.ts",
+    "src/**/*.tsx",
+  ],
+  "compilerOptions": {
+    // 在.tsx文件里支持JSX
+    "jsx": "preserve",
+ }
 }
