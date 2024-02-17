@@ -22,7 +22,6 @@
       <tm-divider></tm-divider>
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>
     </tm-sheet>
-    <dy-down />
   </view>
 </template>
 <style lang="scss" scoped></style>
