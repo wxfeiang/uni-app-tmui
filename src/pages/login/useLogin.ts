@@ -6,12 +6,14 @@ const authStore = useAuthStore();
 import { useRequest } from 'alova';
 
 const rules = {
-  username: {
-    type: 'string',
-    required: true,
-    message: '请填用户名',
-    trigger: ['blur'],
-  },
+  username: [
+    {
+      required: true,
+      message: '用户名不能为空!',
+      validator: (val: string) => val.length > 0,
+    },
+  ],
+
   password: {
     type: 'string',
     required: true,
@@ -32,12 +34,16 @@ const { send: sendLogin2 } = login2(loginFrom.value, {
   loading: false,
 });
 
-const Login = async () => {
-  sendLogin2().then((res: any) => {
-    authStore.SETTIKEN(res.token);
+const Login = async (form: any) => {
+  if (form.validate) {
+    const { token } = await sendLogin2();
+    authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
-  });
+  } else {
+    return;
+  }
 };
+
 const { send: tesToken, data: authInfo } = useRequest(testToken, {
   immediate: false, // 默认不发出请求
   initialData: {},

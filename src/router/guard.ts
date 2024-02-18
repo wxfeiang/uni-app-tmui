@@ -3,6 +3,7 @@ import { Router } from 'uni-mini-router/lib/interfaces';
 
 function createBeforeEachGuard(router: Router) {
   router.beforeEach((to, _, next) => {
+    console.log('🥡[to]:', to);
     const authStore = useAuthStore();
 
     // @ts-ignore
@@ -19,7 +20,7 @@ function createBeforeEachGuard(router: Router) {
       });
     } else if (authStore.isLogin && to && to.name === 'Login') {
       // 如果已经登录且目标页面是登录页面则跳转至首页
-      next({ name: 'Home', navType: 'replaceAll' });
+      next({ name: 'Index', navType: 'replaceAll' });
     } else {
       next();
     }
@@ -28,6 +29,7 @@ function createBeforeEachGuard(router: Router) {
 
 function createAfterEachGuard(router: Router) {
   router.afterEach((to) => {
+    console.log('🥑[to]:', to);
     // @ts-ignore
     if (to && to?.meta?.ignoreAuth) return;
     const authStore = useAuthStore();
@@ -39,7 +41,7 @@ function createAfterEachGuard(router: Router) {
       });
     } else if (authStore.isLogin && to && to.name === 'Login') {
       // 如果已经登录且目标页面是登录页面则跳转至首页
-      router.replaceAll({ name: 'Home' });
+      router.replaceAll({ name: 'Index' });
     }
   });
 }

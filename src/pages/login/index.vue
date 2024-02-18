@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const { Login, tesToken, loginFrom, rules, authInfo } = useLogin();
 const router = useRouter();
-
+const form = ref(null);
 function goto() {
   router.push({ name: "Home" });
 }
@@ -13,11 +13,11 @@ function goto() {
       <tm-text :font-size="24" _class="text-weight-b " label="登录"></tm-text>
       <tm-divider></tm-divider>
 
-      <tm-form ref="form" v-model="loginFrom">
-        <tm-form-item required>
+      <tm-form ref="form" v-model="loginFrom" @submit="Login">
+        <tm-form-item required field="username" :rules="rules.username">
           <tm-input
-            color="primary"
             focusColor="green"
+            color="primary"
             prefix="tmicon-user-fill"
             placeholder="请输入用户名"
             v-model.lazy="loginFrom.username"
@@ -35,9 +35,9 @@ function goto() {
             v-model.lazy="loginFrom.password"
           ></tm-input>
         </tm-form-item>
+        <tm-button form-type="submit" label="登录" block color="green"></tm-button>
       </tm-form>
       <tm-divider></tm-divider>
-      <tm-button @click="Login" label="登录" block color="green"></tm-button>
     </tm-sheet>
 
     <dy-down />
