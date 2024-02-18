@@ -36,7 +36,7 @@ const { send: sendLogin2 } = login2(loginFrom.value, {
 
 const Login = async (form: any) => {
   if (form.validate) {
-    const { token } = await sendLogin2();
+    const { token }: any = await sendLogin2();
     authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
   } else {
