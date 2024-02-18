@@ -12,7 +12,11 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "types": ["@dcloudio/types",  "node"],
+    "types": [
+      "@dcloudio/types",
+       "node",
+       "pinia-plugin-persist-uni"
+      ],
     "paths": {
       "@/*": ["./src/*"]
     }
@@ -26,5 +30,6 @@
     "./src/*.d.ts",
     "./src/**/*.ts",
     "src/**/*.tsx",
+    "./typings/auto-imports.d.ts" // 导入上一步生成的配置文件
   ]
 }

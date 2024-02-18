@@ -1,13 +1,16 @@
-import { createSSRApp } from "vue";
-import * as Pinia from 'pinia';
-import tmui from "./tmui"
-import App from "./App.vue";
-
+import { createPinia } from 'pinia';
+import piniaPersist from 'pinia-plugin-persist-uni';
+import { createSSRApp } from 'vue';
+import App from './App.vue';
+import { setupRouter } from './router';
+import tmui from './tmui';
 export function createApp() {
   const app = createSSRApp(App);
-  app.use(tmui, { shareDisable: false } as Tmui.tmuiConfig)
+  const pinia = createPinia();
+  app.use(pinia.use(piniaPersist));
+  app.use(tmui, { shareDisable: false } as Tmui.tmuiConfig);
+  setupRouter(app);
   return {
     app,
-    Pinia
   };
 }
