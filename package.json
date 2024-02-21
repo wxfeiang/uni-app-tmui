@@ -73,7 +73,7 @@
         "@dcloudio/vite-plugin-uni": "3.0.0-3090920231225001",
         "@types/node": "^20.11.17",
         "@vitejs/plugin-vue-jsx": "^3.1.0",
-        "@vue/runtime-core": "^3.2.45",
+        "@vue/runtime-core": "^3.4.19",
         "autoprefixer": "10.4.14",
         "commitizen": "^4.3.0",
         "commitlint-config-cz": "^0.13.3",

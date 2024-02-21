@@ -13,17 +13,14 @@ const rules = {
       validator: (val: string) => val.length > 0,
     },
   ],
-
   password: {
-    type: 'string',
     required: true,
-    message: '请输入密码',
-    trigger: ['blur', 'change'],
+    message: '密码不能为空',
   },
 };
 const loginFrom = ref(<LoginParams>{
-  username: '',
-  password: '',
+  username: 'admin',
+  password: '123456',
 });
 
 const { send: sendLogin } = useRequest(login(loginFrom.value), {

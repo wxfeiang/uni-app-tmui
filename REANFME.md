@@ -1,5 +1,6 @@
 ## 升级uni-app
 npx @dcloudio/uvm@latest
+npx @dcloudio/uvm@ 3.0.0-alpha-4000120240201002
 
 ## 类型报错提示
 pnpm add  -D @types/node
