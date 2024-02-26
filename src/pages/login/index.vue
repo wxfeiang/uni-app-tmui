@@ -28,6 +28,17 @@ function goto() {
         >
         </tm-input>
       </tm-form-item>
+      <tm-form-item field="code" :rules="rules.code">
+        <tm-input placeholder="验证码" v-model="loginFrom.code">
+          <template #right>
+            <tm-image
+              :width="160"
+              :height="40"
+              src="https://store.tmui.design/api_v2/public/random_picture"
+            ></tm-image>
+          </template>
+        </tm-input>
+      </tm-form-item>
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>
     </tm-form>
   </tm-sheet>

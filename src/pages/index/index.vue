@@ -54,7 +54,7 @@ function laodingfun(val: any) {
         @click="acc = 4"
         activeColor="orange"
         :count="8"
-        url="/pages/chart/index"
+        url="/pages/login/index"
         active
         text="图表中心"
         unicon="tmicon-account"

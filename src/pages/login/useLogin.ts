@@ -17,10 +17,21 @@ const rules = {
     required: true,
     message: '密码不能为空',
   },
+  code: [
+    {
+      required: true,
+      message: '验证码不能为空',
+    },
+    {
+      message: '输入不合法!',
+      validator: (val: string) => val.length < 4,
+    },
+  ],
 };
 const loginFrom = ref(<LoginParams>{
   username: 'admin',
   password: '123456',
+  code: '',
 });
 
 const { send: sendLogin } = useRequest(login(loginFrom.value), {
