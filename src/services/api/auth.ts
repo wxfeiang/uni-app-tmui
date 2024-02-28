@@ -18,9 +18,19 @@ export function login2(params: LoginParams, config: any) {
  * 测试token
  * @param params
  */
-export function testToken() {
-  return request.Get(TEST_TOKEN);
-}
+
+export const testToken = (config: any) => {
+  const methodInstance = request.Get(TEST_TOKEN, {
+    params: {
+      userId: 1,
+    },
+  });
+  methodInstance.meta = {
+    ignoreToken: true,
+  };
+
+  return useRequest(methodInstance, config);
+};
 
 /**
  * 登出

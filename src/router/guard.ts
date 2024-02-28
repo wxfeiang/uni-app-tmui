@@ -41,7 +41,7 @@ function createAfterEachGuard(router: Router) {
       });
     } else if (authStore.isLogin && to && to.name === 'Login') {
       // 如果已经登录且目标页面是登录页面则跳转至首页
-      router.replaceAll({ name: 'Index' });
+      // router.replaceAll({ name: 'Index' });
     }
   });
 }

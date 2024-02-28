@@ -41,10 +41,12 @@ const Login = async (form: any) => {
   }
 };
 
-const { send: tesToken, data: authInfo } = useRequest(testToken, {
-  immediate: false, // 默认不发出请求
+const { send: tesToken, data: authInfo } = testToken({
+  immediate: true, // 默认不发出请求
   initialData: {},
 });
+
+console.log('🦑[authInfo]:', authInfo);
 export default () => {
   return { Login, tesToken, loginFrom, rules, authInfo };
 };

@@ -8,6 +8,7 @@ function goto() {
 </script>
 
 <template>
+  {{ authInfo }}
   <tm-sheet color="primary">
     <tm-text :font-size="24" _class="text-weight-b" label="登录"></tm-text>
     <tm-divider></tm-divider>

@@ -29,7 +29,8 @@ const alovaInstance = createAlova({
   }),
   timeout: 5000,
   beforeRequest: (method) => {
-    console.log('🥤[method]:', method);
+    //console.log('🍏[method]:', method, method.meta);
+
     const authStore = useAuthStore();
     //默认不是用全局加载状态。。。
     // Loading('加载中...');
@@ -38,6 +39,7 @@ const alovaInstance = createAlova({
       HEADER,
       authStore.getAuthorization(),
     );
+    console.log('🥤[method]:', method);
   },
   responsed: {
     /**
