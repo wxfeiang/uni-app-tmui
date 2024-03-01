@@ -1,4 +1,4 @@
-import { getBaseUrl } from '@/utils/env';
+import { devMode, getBaseUrl } from '@/utils/env';
 import AdapterUniapp from '@alova/adapter-uniapp';
 import { createAlova } from 'alova';
 
@@ -8,6 +8,9 @@ import { useAuthStore } from '@/store/authStore';
 import { checkStatus } from '@/utils/http/checkStatus';
 import { Toast } from '@/utils/uniapi/prompt';
 import { assign } from 'lodash-es';
+
+// @ts-ignore
+import { beforeQuest } from '@/utils/encryptUtils';
 
 const BASE_URL = getBaseUrl();
 
@@ -22,22 +25,25 @@ const HEADER = {
  */
 const alovaInstance = createAlova({
   baseURL: BASE_URL,
-  ...AdapterUniapp({
-    // /* #ifndef APP-PLUS */
-    // mockRequest: isUseMock() ? mockAdapter : undefined, // APP 平台无法使用mock
-    // /* #endif */
-  }),
+  ...AdapterUniapp({}),
+
   timeout: 5000,
+  // 在开发环境开启错误日志
+  errorLogger: process.env.NODE_ENV === devMode,
+  // //在开发环境开启缓存命中日志
+  cacheLogger: process.env.NODE_ENV === devMode,
+  // 请求拦截器
+
   beforeRequest: (method) => {
-    console.log('🥤[method]:', method);
     const authStore = useAuthStore();
-    //默认不是用全局加载状态。。。
-    // Loading('加载中...');
+    method.config = beforeQuest(method);
     method.config.headers = assign(
       method.config.headers,
       HEADER,
       authStore.getAuthorization(),
     );
+    // @ts-ignore
+    method.responseType = method.meta?.responseType ?? '';
   },
   responsed: {
     /**
@@ -47,14 +53,16 @@ const alovaInstance = createAlova({
      * @param method
      */
     onSuccess: async (response, method) => {
-      const { config } = method;
+      const { config, meta } = method;
       const { enableDownload, enableUpload } = config;
       // @ts-ignore
       const { statusCode, data: rawData } = response;
+      const { code, msg, data } = rawData as API;
+      if (statusCode == 200 && meta && meta?.buffer) {
+        return response;
+      }
 
-      const { code, message, data } = rawData as API;
-
-      if (code === 200) {
+      if (code == 200) {
         if (enableDownload) {
           // 下载处理
           return rawData;
@@ -63,13 +71,17 @@ const alovaInstance = createAlova({
           // 上传处理
           return rawData;
         }
-        if (message === ResultEnum.TYPE) {
+        if (meta!.resAll) {
+          // 上传处理
+          return response;
+        }
+        if (msg.toLowerCase() === ResultEnum.TYPE) {
           return data as any;
         }
-        message && Toast(message);
+        msg && Toast(msg);
         return Promise.reject(rawData);
       }
-      checkStatus(statusCode, message || '');
+      checkStatus(statusCode, msg || '');
       return Promise.reject(rawData);
     },
 
@@ -81,7 +93,6 @@ const alovaInstance = createAlova({
      */
     onError: (err, method) => {
       // error('Request Error!');
-
       return Promise.reject({ err, method });
     },
   },

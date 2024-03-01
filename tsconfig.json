@@ -30,6 +30,6 @@
     "./src/*.d.ts",
     "./src/**/*.ts",
     "src/**/*.tsx",
-    "./typings/auto-imports.d.ts" // 导入上一步生成的配置文件
-  ]
+    "./typings/auto-imports.d.ts", // 导入上一步生成的配置文件
+     "src/utils/*.js"  ]
 }

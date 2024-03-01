@@ -1,5 +1,5 @@
 import { router } from '@/router'; // js文件使用方法
-import { login, login2, testToken } from '@/services/api/auth';
+import { login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
 const authStore = useAuthStore();
 //
@@ -29,14 +29,11 @@ const rules = {
   ],
 };
 const loginFrom = ref(<LoginParams>{
-  username: 'admin',
-  password: '123456',
+  username: '18919853421',
+  password: 'Zxe@2020',
   code: '',
 });
 
-const { send: sendLogin } = useRequest(login(loginFrom.value), {
-  immediate: false,
-});
 const { send: sendLogin2 } = login2(loginFrom.value, {
   immediate: false,
   loading: false,
@@ -54,8 +51,8 @@ const Login = async (form: any) => {
 
 const { send: tesToken, data: authInfo } = useRequest(testToken, {
   immediate: false, // 默认不发出请求
-  initialData: {},
+  initialData: {}, // 请求响应前，data的初始值
 });
 export default () => {
-  return { Login, tesToken, loginFrom, rules, authInfo };
+  return { Login, tesToken, loginFrom, rules };
 };

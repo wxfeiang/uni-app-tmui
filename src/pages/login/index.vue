@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-const { Login, tesToken, loginFrom, rules, authInfo } = useLogin();
+const { Login, tesToken, loginFrom, rules } = useLogin();
+const { captchaConfigData, codeImg, getCodeUrl } = useSystem();
 const router = useRouter();
 const form = ref(null);
 function goto() {
@@ -32,9 +33,10 @@ function goto() {
         <tm-input placeholder="验证码" v-model="loginFrom.code">
           <template #right>
             <tm-image
-              :width="160"
-              :height="40"
-              src="https://store.tmui.design/api_v2/public/random_picture"
+              :width="180"
+              :height="50"
+              :src="codeImg"
+              @click="getCodeUrl"
             ></tm-image>
           </template>
         </tm-input>
