@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { Login, tesToken, loginFrom, rules, authInfo } = useLogin();
+const { Login, tesToken, loginFrom, rules, authInfo, download } = useLogin();
 const router = useRouter();
 const form = ref(null);
 function goto() {
@@ -31,5 +31,7 @@ function goto() {
       </tm-form-item>
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>
     </tm-form>
+
+    <tm-button form-type="submit" label="下载文件" @click="download"></tm-button>
   </tm-sheet>
 </template>

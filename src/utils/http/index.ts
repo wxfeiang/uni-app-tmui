@@ -1,4 +1,4 @@
-import { getBaseUrl } from '@/utils/env';
+import { devMode, getBaseUrl } from '@/utils/env';
 import AdapterUniapp from '@alova/adapter-uniapp';
 import { createAlova } from 'alova';
 
@@ -27,10 +27,13 @@ const alovaInstance = createAlova({
     // mockRequest: isUseMock() ? mockAdapter : undefined, // APP 平台无法使用mock
     // /* #endif */
   }),
+  // 在开发环境开启错误日志
+  errorLogger: process.env.NODE_ENV === devMode,
+  // 在开发环境开启缓存命中日志
+  //cacheLogger: process.env.NODE_ENV === 'development',
   timeout: 5000,
   beforeRequest: (method) => {
     //console.log('🍏[method]:', method, method.meta);
-
     const authStore = useAuthStore();
     //默认不是用全局加载状态。。。
     // Loading('加载中...');
@@ -39,7 +42,9 @@ const alovaInstance = createAlova({
       HEADER,
       authStore.getAuthorization(),
     );
-    console.log('🥤[method]:', method);
+    // @ts-ignore
+    method.responseType = method.meta?.responseType ?? '';
+    console.log('🍎[method]:', method);
   },
   responsed: {
     /**
@@ -53,8 +58,13 @@ const alovaInstance = createAlova({
       const { enableDownload, enableUpload } = config;
       // @ts-ignore
       const { statusCode, data: rawData } = response;
+      console.log('🍨[response]:', response);
 
       const { code, message, data } = rawData as API;
+
+      if (method.meta?.blob) {
+        return response;
+      }
 
       if (code === 200) {
         if (enableDownload) {

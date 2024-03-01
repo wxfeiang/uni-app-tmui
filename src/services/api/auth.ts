@@ -4,6 +4,7 @@ const LOGIN = '/employee/login';
 const LOGIN_OUT = '/logout';
 const REFRESH_TOKEN = '/refresh/token';
 const TEST_TOKEN = '/employee/test';
+const DOWNFILE = '/employee/exporeList';
 /**
  * 登录
  * @param params
@@ -27,6 +28,21 @@ export const testToken = (config: any) => {
   });
   methodInstance.meta = {
     ignoreToken: true,
+  };
+
+  return useRequest(methodInstance, config);
+};
+
+export const downFile = (config: any) => {
+  const methodInstance = request.Get(DOWNFILE, {
+    params: {
+      userId: 2,
+    },
+  });
+  methodInstance.meta = {
+    ignoreToken: true,
+    blob: true,
+    responseType: 'arraybuffer',
   };
 
   return useRequest(methodInstance, config);
