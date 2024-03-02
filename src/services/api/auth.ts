@@ -34,15 +34,22 @@ export const testToken = (config: any) => {
 };
 
 export const downFile = (config: any) => {
-  const methodInstance = request.Get(DOWNFILE, {
-    params: {
-      userId: 2,
+  const methodInstance = request.Post(
+    DOWNFILE,
+    {
+      params: {
+        userId: 2,
+      },
     },
-  });
+    {
+      responseType: 'arraybuffer',
+      params: {
+        userId: 2,
+      },
+    },
+  );
   methodInstance.meta = {
     ignoreToken: true,
-    blob: true,
-    responseType: 'arraybuffer',
   };
 
   return useRequest(methodInstance, config);

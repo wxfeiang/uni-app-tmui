@@ -1,6 +1,7 @@
 import { router } from '@/router'; // js文件使用方法
 import { downFile, login, login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
+import { downBuffFile } from '@/utils';
 const authStore = useAuthStore();
 //
 import { useRequest } from 'alova';
@@ -55,19 +56,7 @@ const {
   initialData: {},
 });
 tesFile((e: any) => {
-  console.log('🧀', e.data);
-  let fileName = e.data.header['content-disposition'].replace(
-    /\attachment; filename=(.*)/,
-    '$1',
-  );
-  const blob = new Blob([e.data.data], { type: e.data.header['content-type'] });
-  const dom = document.createElement('a');
-  const downUrl = window.URL.createObjectURL(blob);
-  dom.href = downUrl;
-  dom.download = decodeURIComponent(fileName);
-  dom.style.display = 'none';
-  document.body.appendChild(dom);
-  dom.click();
+  downBuffFile(e);
 });
 
 export default () => {

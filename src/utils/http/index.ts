@@ -33,7 +33,7 @@ const alovaInstance = createAlova({
   //cacheLogger: process.env.NODE_ENV === 'development',
   timeout: 5000,
   beforeRequest: (method) => {
-    //console.log('🍏[method]:', method, method.meta);
+    //
     const authStore = useAuthStore();
     //默认不是用全局加载状态。。。
     // Loading('加载中...');
@@ -44,7 +44,6 @@ const alovaInstance = createAlova({
     );
     // @ts-ignore
     method.responseType = method.meta?.responseType ?? '';
-    console.log('🍎[method]:', method);
   },
   responsed: {
     /**
@@ -54,18 +53,19 @@ const alovaInstance = createAlova({
      * @param method
      */
     onSuccess: async (response, method) => {
-      const { config } = method;
-      const { enableDownload, enableUpload } = config;
+      const { config, meta } = method;
+      const { enableDownload, enableUpload, responseType } = config;
       // @ts-ignore
       const { statusCode, data: rawData } = response;
-      console.log('🍨[response]:', response);
-
       const { code, message, data } = rawData as API;
-
-      if (method.meta?.blob) {
+      // 返回所有结果
+      if (
+        (statusCode == 200 && meta!.resAll) ||
+        (statusCode == 201 && responseType)
+      ) {
         return response;
       }
-
+      // 返回data
       if (code === 200) {
         if (enableDownload) {
           // 下载处理
