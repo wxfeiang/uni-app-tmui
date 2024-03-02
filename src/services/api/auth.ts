@@ -33,21 +33,34 @@ export const testToken = (config: any) => {
   return useRequest(methodInstance, config);
 };
 
+// export const downFile = (config: any) => {
+//   const methodInstance = request.Post(
+//     DOWNFILE,
+//     {
+//       params: {
+//         userId: 2,
+//       },
+//     },
+//     {
+//       responseType: 'arraybuffer',
+//       params: {
+//         userId: 2,
+//       },
+//     },
+//   );
+//   methodInstance.meta = {
+//     ignoreToken: true,
+//   };
+
+//   return useRequest(methodInstance, config);
+// };
 export const downFile = (config: any) => {
-  const methodInstance = request.Post(
-    DOWNFILE,
-    {
-      params: {
-        userId: 2,
-      },
+  const methodInstance = request.Get(DOWNFILE, {
+    params: {
+      userId: 2,
     },
-    {
-      responseType: 'arraybuffer',
-      params: {
-        userId: 2,
-      },
-    },
-  );
+    responseType: 'arraybuffer',
+  });
   methodInstance.meta = {
     ignoreToken: true,
   };
