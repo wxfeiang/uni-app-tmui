@@ -3,8 +3,6 @@ import { useSystemStore } from '@/store/modules/system';
 import CryptoJS from "crypto-js";
 import JSEncrypt from 'jsencrypt';
 import { sm2, sm4 } from 'sm-crypto';
-// const sm2 = require('sm-crypto').sm2
-// const sm4 = require('sm-crypto').sm4;
 const store = useSystemStore();
 
 
@@ -20,28 +18,14 @@ let AES_KEY = ""
 export function createFilter(config) {
   const utils = {
     getConf: async () => {
-
       let sysConfig
       if (store.filterData) {
         sysConfig = store.filterData.data
       }
       if (!sysConfig) {
-        // await authApi.getEncryptConf().then(res => {
-        //     const data = res.status ? res.data.data : res.data
-        //     const temp = data["whiteList"].concat(API_ENCRYPT_WHITE)
-        //     API_ENCRYPT_WHITE = Array.from(new Set(temp))
-        //     API_ENCRYPT_KEY = data["paramId"] || API_ENCRYPT_KEY
-        //     API_ENCRYPT_ENABLE = data["enable"]
-        //     API_ENCRYPT_PARAM = data["paramList"]
-        //     API_ENCRYPT_EXPAND = data["expandMap"]
-        //     API_ENCRYPT_HEADER = data["headerKey"]
-        //     API_ENCRYPR_TYPE = data["type"]
-        //     window.sessionStorage.setItem('SYSTEM_CONFIG', JSON.stringify(data))
-        // })
+
       } else {
         const data = sysConfig
-        // const temp = data["whiteList"].concat(API_ENCRYPT_WHITE)
-        // API_ENCRYPT_WHITE = Array.from(new Set(temp))
         API_ENCRYPT_KEY = data["paramId"] || API_ENCRYPT_KEY
         API_ENCRYPT_ENABLE = data["enable"]
         API_ENCRYPT_PARAM = data["paramList"]
@@ -49,8 +33,8 @@ export function createFilter(config) {
         API_ENCRYPT_HEADER = data["headerKey"]
         API_ENCRYPR_TYPE = data["type"]
       }
-      // var z = new Uint32Array(16);
-      AES_KEY = utils.getAesKey()
+
+      AES_KEY = await utils.getAesKey()
       utils.onRequest(config)
     },
     onRequest: (config) => {
@@ -173,10 +157,27 @@ export function createFilter(config) {
 
     // 生成随机的加密key
     getAesKey: () => {
+
+      // #ifdef MP-WEIXIN
+      const Key = new Promise((resolve, reject) => {
+        wx.getRandomValues({
+          length: 6,// 生成 6 个字节长度的随机数,
+          success: res => {
+            let key = wx.arrayBufferToBase64(res.randomValues)
+            // 转换为 base64 字符串后打印
+            resolve(key)
+          }
+        })
+      })
+      return Key
+      // #endif
+      // #ifndef MP-WEIXIN
       if (API_ENCRYPR_TYPE == "sm") {
         return utils.md5(window.crypto.getRandomValues(new Uint32Array(1))[0])
       }
       return utils.md5(window.crypto.getRandomValues(new Uint32Array(1))[0]).substring(0, 16)
+      // #endif
+
     },
 
 

@@ -58,10 +58,12 @@ const alovaInstance = createAlova({
       // @ts-ignore
       const { statusCode, data: rawData } = response;
       const { code, msg, data } = rawData as API;
+
+      // 文件流处理形式
       if (statusCode == 200 && meta && meta?.buffer) {
         return response;
       }
-
+      // 正常数据处理
       if (code == 200) {
         if (enableDownload) {
           // 下载处理
@@ -72,7 +74,6 @@ const alovaInstance = createAlova({
           return rawData;
         }
         if (meta!.resAll) {
-          // 上传处理
           return response;
         }
         if (msg.toLowerCase() === ResultEnum.TYPE) {

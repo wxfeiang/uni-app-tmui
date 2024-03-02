@@ -50,7 +50,7 @@ const Login = async (form: any) => {
 };
 
 const { send: tesToken, data: authInfo } = useRequest(testToken, {
-  immediate: false, // 默认不发出请求
+  immediate: true, // 默认不发出请求
   initialData: {}, // 请求响应前，data的初始值
 });
 export default () => {

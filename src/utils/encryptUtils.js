@@ -3,8 +3,9 @@ import { useSystemStore } from '@/store/modules/system';
 import { Decrypt } from "@/utils/aesMgr3";
 import { createFilter } from "@/utils/filter";
 import rsaencrypt from "@/utils/jsencrypt";
+import { uuid } from "@/utils/uuid";
 import CryptoJS from "crypto-js"; //引用AES源码js
-import { v4 as uuidv4 } from 'uuid';
+
 const store = useSystemStore();
 const httpParam = {
   appKey: store.appKey,
@@ -23,7 +24,8 @@ export function seData(data, url) {
     appKey: httpParam.appKey,
     userDId: store.userDId,
     timestamp: time,
-    replay: uuidv4(),
+    //replay: uni.$tm.u.getUid(20),
+    replay: uuid(),
   });
   sign = generateSign(data);
   params = JSON.stringify(

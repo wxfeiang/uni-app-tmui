@@ -88,13 +88,14 @@
         "husky": "^8.0.3",
         "js-base64": "^3.7.7",
         "js-md5": "^0.8.3",
+        "jsbn": "^1.1.0",
         "jsencrypt": "^3.3.2",
         "lint-staged": "^13.3.0",
         "lodash-es": "^4.17.21",
         "sm-crypto": "^0.3.13",
         "unplugin-auto-import": "^0.17.5",
         "unplugin-vue-components": "0.24.1",
-        "uuid": "^9.0.1",
+        "uuid": "^7.0.3",
         "vite": "4.0.3"
     },
     "config": {
