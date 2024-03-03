@@ -39,4 +39,5 @@ function goto() {
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>
     </tm-form>
   </tm-sheet>
+  <view class="fontFily"> asdca </view>
 </template>
