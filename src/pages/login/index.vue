@@ -34,4 +34,5 @@ function goto() {
 
     <tm-button form-type="submit" label="下载文件" @click="download"></tm-button>
   </tm-sheet>
+  <view class="fontFily"> asdca </view>
 </template>
