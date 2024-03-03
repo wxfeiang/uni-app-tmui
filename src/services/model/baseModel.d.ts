@@ -7,3 +7,7 @@ declare interface API<T = any> {
   message?: string;
   success?: Boolean;
 }
+
+declare interface RESPONSE<T = any> {
+  data?: T;
+}

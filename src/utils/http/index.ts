@@ -9,7 +9,6 @@ import { checkStatus } from '@/utils/http/checkStatus';
 import { Toast } from '@/utils/uniapi/prompt';
 import { assign } from 'lodash-es';
 
-// @ts-ignore
 import { beforeQuest } from '@/utils/encryptUtils';
 
 const BASE_URL = getBaseUrl();
@@ -55,12 +54,12 @@ const alovaInstance = createAlova({
     onSuccess: async (response, method) => {
       const { config, meta } = method;
       const { enableDownload, enableUpload } = config;
-      // @ts-ignore
-      const { statusCode, data: rawData } = response;
+
+      const { statusCode, data: rawData } = response as any;
       const { code, msg, data } = rawData as API;
 
       // 文件流处理形式
-      if (statusCode == 200 && meta && meta?.buffer) {
+      if (statusCode == 200 && meta!.buffer) {
         return response;
       }
       // 正常数据处理

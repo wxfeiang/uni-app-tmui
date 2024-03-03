@@ -32,12 +32,7 @@ function goto() {
       <tm-form-item field="code" :rules="rules.code">
         <tm-input placeholder="验证码" v-model="loginFrom.code">
           <template #right>
-            <tm-image
-              :width="180"
-              :height="50"
-              :src="codeImg"
-              @click="getCodeUrl"
-            ></tm-image>
+            <tm-image :height="50" :src="codeImg" @click="getCodeUrl"></tm-image>
           </template>
         </tm-input>
       </tm-form-item>
