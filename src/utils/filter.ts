@@ -123,7 +123,6 @@ export function createFilter<T>(config: T) {
     // 生成随机的加密key
     getAesKey: () => {
       // #ifndef MP-WEIXIN
-
       if (API_ENCRYPR_TYPE == 'sm') {
         return utils.md5(
           window.crypto.getRandomValues(new Uint32Array(1))[0] as any,

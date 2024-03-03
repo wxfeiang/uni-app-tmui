@@ -15,7 +15,7 @@ export const useSystemStore = defineStore('systemStore', () => {
   const appSecret = ref('');
   const strppd = ref('');
   const resstrppd = ref('');
-  const filterData = ref({} as STSCONFIG);
+  const filterData = ref(<STSCONFIG>{});
   const secretStr = ref('');
   const encryptId = ref('');
   const userDId = ref('');
