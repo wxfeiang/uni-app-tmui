@@ -1,4 +1,12 @@
+// #ifndef MP-WEIXIN
+import { v4 as uuidv4 } from 'uuid';
+// #endif
+
 export const uuid = () => {
+  // #ifndef MP-WEIXIN
+  return uuidv4();
+  // #endif
+  // #ifdef MP-WEIXIN
   var s: any = [];
   var hexDigits = '0123456789abcdef';
   for (var i = 0; i < 36; i++) {
@@ -9,4 +17,5 @@ export const uuid = () => {
   s[8] = s[13] = s[18] = s[23] = '-';
   var uuid = s.join('');
   return uuid;
+  // #endif
 };
