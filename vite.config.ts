@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import type { ConfigEnv } from 'vite';
 import { loadEnv } from 'vite';
+import removeConsole from 'vite-plugin-remove-console';
 export default ({ command, mode }: ConfigEnv) => {
   console.log('🍔[command]:', command);
   const env = loadEnv(mode, __dirname);
@@ -14,6 +15,7 @@ export default ({ command, mode }: ConfigEnv) => {
     plugins: [
       uni(),
       vueJsx(),
+      removeConsole(),
       // Unocss({
       //   presets: [presetUno()],
       // }),
