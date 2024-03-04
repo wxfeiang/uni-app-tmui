@@ -42,8 +42,7 @@ const alovaInstance = createAlova({
       HEADER,
       authStore.getAuthorization(),
     );
-    // @ts-ignore
-    method.responseType = method.meta?.responseType ?? '';
+    console.log('🍌[method]:', method);
   },
   responsed: {
     /**
@@ -60,7 +59,7 @@ const alovaInstance = createAlova({
       const { code, message, data } = rawData as API;
       // 返回所有结果
       if (
-        (statusCode == 200 && meta!.resAll) ||
+        (statusCode == 200 && meta?.resAll) ||
         (statusCode == 201 && responseType)
       ) {
         return response;
