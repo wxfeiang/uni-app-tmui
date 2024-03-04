@@ -64,3 +64,19 @@ Get(
   );
 ```
 
+## Router
+**注意：** 路由方法已经按需加载
+[路由插件地址](https://moonofweisheng.github.io/uni-mini-router/guide/introduction.html)
+```
+	{
+			"path": "pages/index/index",
+			"name":"Index",     // 路由名称
+			 "meta": {
+			 	"ignoreAuth": true // 忽略校验 ,直接进入路由
+			 },
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		}
+
+```
