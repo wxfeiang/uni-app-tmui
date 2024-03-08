@@ -1,6 +1,6 @@
 import { request } from '@/utils/http';
 import { useRequest } from 'alova';
-const LOGIN = '/employee/login';
+const LOGIN = '/system/api/helper/productLogin';
 const LOGIN_OUT = '/logout';
 const REFRESH_TOKEN = '/refresh/token';
 const TEST_TOKEN = '/employee/test';
@@ -11,8 +11,8 @@ const TEST_TOKEN = '/employee/test';
 export function login(params: LoginParams) {
   return request.Post(LOGIN, params);
 }
-export function login2(params: LoginParams, config: any) {
-  return useRequest(request.Post(LOGIN, params), { ...config });
+export function login2(params: any, config: any) {
+  return useRequest((newTodo) => request.Post(LOGIN, newTodo), { ...config });
 }
 /**
  * 测试token

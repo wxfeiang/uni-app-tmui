@@ -1,110 +1,115 @@
 import { useSystemStore } from '@/store/modules/system';
-import { Decrypt } from '@/utils/aesMgr';
-// @ts-ignore
-import { createFilter } from '@/utils/filter';
+import { Decrypt, Encrypt } from '@/utils/aesMgr';
 import { decrypt } from '@/utils/jsencrypt';
 import { uuid } from '@/utils/uuid';
-import CryptoJS from 'crypto-js'; //引用AES源码js
-
+import { Base64 } from 'js-base64'; // 引入
+import { md5 } from 'js-md5';
+import { createFilter } from './filter';
 const store = useSystemStore();
 const httpParam = {
   appKey: store.appKey,
   appSecret: '',
 };
+
+// 生成时间
 export function getTimeStamp() {
   let date = Date.parse(new Date() as any);
   return date;
 }
-export function seData(data: any, url: string) {
-  let params;
-  let sign;
-  data = data || {};
-  let time = getTimeStamp();
-  Object.assign(data, {
-    appKey: httpParam.appKey,
-    userDId: store.userDId,
-    timestamp: time,
-    //replay: uni.$tm.u.getUid(20),
-    replay: uuid(),
-  });
-  sign = generateSign(data);
-  params = JSON.stringify(
-    Object.assign({ sign }, data, { userDId: store.encryptId }),
-  );
-
-  return params;
-}
-//加密方法
-export function Encrypt(word: any) {
-  let key = '';
-  let iv = '';
-  if (store.appSecret) {
-    let secretStr = store.appSecret;
-    key = CryptoJS.enc.Utf8.parse(secretStr.slice(0, 16)) as any;
-    iv = CryptoJS.enc.Utf8.parse(secretStr.slice(0, 16)) as any;
-  } else {
-    return;
-  }
-  let srcs = CryptoJS.enc.Utf8.parse(word);
-  let encrypted: any = CryptoJS.AES.encrypt(srcs, key, {
-    iv: iv as any,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
-  });
-  let hexStr = encrypted.ciphertext.toString().toUpperCase();
-  return hexStr;
-}
-export function objKeySort(obj: any) {
-  //先用Object内置类的keys方法获取要排序对象的属性名，再利用Array原型上的sort方法对获取的属性名进行排序，newkey是一个数组
-  var newkey = Object.keys(obj).sort();
-  //创建一个新的对象，用于存放排好序的键值对
-  var newObj: any = {};
-  //遍历newkey数组
-  for (var i = 0; i < newkey.length; i++) {
-    //向新创建的对象中按照排好的顺序依次增加键值对
-    newObj[newkey[i]] = obj[newkey[i]];
-  }
-  //返回排好序的新对象
-  return newObj;
-}
-export function getSign(params: any) {
-  const obj = objKeySort(params);
-  const sdata = [];
+export function convertObjToStr(obj: any) {
+  let arr = new Array();
+  let num = 0;
+  let str = '';
   for (let key in obj) {
-    let value: any = obj[key];
-    if (value !== '' && value !== null && value !== undefined) {
-      sdata.push(`${key}=${value}`);
+    if (typeof obj[key] === 'string') {
+      // 判断空格的情况
+      obj[key] = obj[key].trim();
+    }
+    if (obj[key] || obj[key] === false) {
+      arr[num] = key;
+      num++;
+    } else if (obj[key] === 0) {
+      arr[num] = key;
+      num++;
     }
   }
-  let signStr: any = sdata.join('&');
-  signStr = CryptoJS.MD5(encodeURIComponent(signStr));
-  return signStr;
+  let sortArr = arr.sort();
+  if (Object.keys(arr).length <= 0) {
+    str = '';
+  } else {
+    for (let i in sortArr) {
+      if (obj[sortArr[i]] instanceof Array && obj[sortArr[i]].length !== 0) {
+        str = str + sortArr[i] + '=' + JSON.stringify(obj[sortArr[i]]) + '&';
+      } else if (
+        obj[sortArr[i]] instanceof Array &&
+        obj[sortArr[i]].length === 0
+      ) {
+        str += sortArr[i] + '=[]&';
+      } else {
+        str += sortArr[i] + '=' + obj[sortArr[i]] + '&';
+      }
+    }
+  }
+  return str;
 }
-export function generateSign(params: any) {
-  let signMd5 = getSign(params);
 
-  let signAes: any = Encrypt(signMd5);
-
-  let signFinally = encodeURIComponent(encodeURIComponent(signAes));
-  return signFinally;
+// 签名生成
+export function sign(obj: any) {
+  let str = convertObjToStr(obj);
+  str = str.slice(0, str.length - 1);
+  let md5Str = md5(str);
+  return Encrypt(md5Str);
 }
+
 // 请求拦截参数处理
-export function beforeQuest(config: any) {
-  config.data = seData(config.data, config.url);
-  let olaData = {
-    body: config.data,
-    headers: config.headers,
-  };
-  let newData = !config.meta?.ignoreEncrypt ? createFilter(olaData) : olaData;
-  config.data = {};
-  config.data = newData.body;
-  config.headers = newData.headers;
+export function beforeQuest(method: any) {
+  const { config, data, params } = method;
+  const ignoreSign = method?.meta?.ignoreSign;
 
-  return config;
+  // 数据合并转换
+  let initParams = {
+    appKey: httpParam.appKey,
+    timestamp: getTimeStamp(),
+    replay: uuid(),
+  };
+
+  if (method.type === 'GET') {
+    method.params = {
+      ...initParams,
+      ...params,
+    };
+    config.headers['sign'] = !ignoreSign ? sign(method.params) : '';
+  }
+  if (method.type === 'POST') {
+    method.data = {
+      ...initParams,
+      ...data,
+    };
+
+    config.headers['sign'] = !ignoreSign ? sign(method.data) : '';
+  }
+  console.log('🍵[method]:', method);
+  const a = createFilter(method);
+  return '1212';
+}
+
+// 返回数据cont处理配置
+export function changeRes(res: any, code: string) {
+  let count: number = (res.header.count || res.header.Count) * 1;
+
+  if (count > 0) {
+    for (let i = 0; i < count; i++) {
+      code = Base64.decode(code);
+    }
+  }
+  return code;
 }
 // 返回参数解密
 export function responseAes(response: any) {
-  let aesRes = decrypt(response.headers.responsek);
-  let aesResiv = decrypt(response.headers.responsev);
+  let aesRes = decrypt(response.header.responsek);
+  let aesResiv = decrypt(response.header.responsev);
+  if (!aesRes || !aesResiv) {
+    return { msg: '解密出现问题了----' };
+  }
   return JSON.parse(Decrypt(response.data, aesRes, aesResiv) as any);
 }

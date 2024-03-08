@@ -1,5 +1,5 @@
 declare interface LoginParams {
-  username: string;
+  phone: string;
   password: string;
   code?: number | string;
 }

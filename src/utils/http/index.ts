@@ -5,14 +5,12 @@ import { createAlova } from 'alova';
 import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
 import { API } from '@/services/model/baseModel';
 import { useAuthStore } from '@/store/authStore';
+import { beforeQuest, responseAes } from '@/utils/encryptUtils';
 import { checkStatus } from '@/utils/http/checkStatus';
 import { Toast } from '@/utils/uniapi/prompt';
 import { assign } from 'lodash-es';
-
-import { beforeQuest } from '@/utils/encryptUtils';
-
 const BASE_URL = getBaseUrl();
-
+const authStore = useAuthStore();
 const HEADER = {
   'Content-Type': ContentTypeEnum.JSON,
   Accept: 'application/json, text/plain, */*',
@@ -34,15 +32,12 @@ const alovaInstance = createAlova({
   // 请求拦截器
 
   beforeRequest: (method) => {
-    const authStore = useAuthStore();
-    method.config = beforeQuest(method);
+    beforeQuest(method);
     method.config.headers = assign(
       method.config.headers,
       HEADER,
       authStore.getAuthorization(),
     );
-    // @ts-ignore
-    method.responseType = method.meta?.responseType ?? '';
   },
   responsed: {
     /**
@@ -56,14 +51,16 @@ const alovaInstance = createAlova({
       const { enableDownload, enableUpload } = config;
 
       const { statusCode, data: rawData } = response as any;
-      const { code, msg, data } = rawData as API;
-
+      const { msg, data, code } = rawData as API;
       // 文件流处理形式
-      if (statusCode == 200 && meta!.buffer) {
+      if (statusCode == 200 && config.responseType) {
         return response;
       }
       // 正常数据处理
-      if (code == 200) {
+      if (statusCode == 200) {
+        if (meta?.resAll) {
+          return response;
+        }
         if (enableDownload) {
           // 下载处理
           return rawData;
@@ -72,15 +69,18 @@ const alovaInstance = createAlova({
           // 上传处理
           return rawData;
         }
-        if (meta!.resAll) {
-          return response;
+
+        const resAllData = responseAes(response);
+        const { data: rdata, code: rode, msg: rmsg } = resAllData;
+        if (rode == ResultEnum.CODE) {
+          return rdata as any;
+        } else {
+          rmsg && Toast(rmsg || 'asdbvabsd');
         }
-        if (msg.toLowerCase() === ResultEnum.TYPE) {
-          return data as any;
-        }
-        msg && Toast(msg);
-        return Promise.reject(rawData);
+        checkStatus(statusCode, msg || '');
+        return Promise.reject(resAllData);
       }
+      //TODO: 小程序端解密key 有问题 ,H5端 系统错误
       checkStatus(statusCode, msg || '');
       return Promise.reject(rawData);
     },
@@ -92,7 +92,7 @@ const alovaInstance = createAlova({
      * @param method
      */
     onError: (err, method) => {
-      // error('Request Error!');
+      checkStatus(0);
       return Promise.reject({ err, method });
     },
   },

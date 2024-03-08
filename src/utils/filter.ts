@@ -20,12 +20,11 @@ let API_ENCRYPT_EXPAND: any = {};
 let API_ENCRYPT_HEADER = 'puubke';
 let API_ENCRYPT_ENABLE = true;
 let API_ENCRYPR_TYPE = 'aes';
-let AES_KEY = '';
-
-export function createFilter<T>(config: T) {
+let AES_KEY: any = ''; //
+export function createFilter<T>(method: T) {
   const utils = {
     getConf: async () => {
-      if (store.filterData) {
+      if (store.filterData && store.filterData.headerKey) {
         const data = store.filterData;
 
         API_ENCRYPT_KEY = data.paramId || API_ENCRYPT_KEY;
@@ -36,19 +35,104 @@ export function createFilter<T>(config: T) {
         API_ENCRYPR_TYPE = data.type;
       }
 
-      AES_KEY = (await utils.getAesKey()) as string;
-      console.log('🥪[AES_KEY]:', AES_KEY);
-
-      utils.onRequest(config);
+      // let a = await
+      //
+      // AES_KEY = 'ybgxtxy8vcren2e1';
+      utils.onRequest(method);
     },
-    onRequest: (config: any) => {
-      const aesKey = AES_KEY;
-      const body = config.body;
-      config.body = utils.syEncry(body, aesKey);
-      let headers = { ...config.headers };
-      headers[API_ENCRYPT_HEADER] = utils.asyEncry(aesKey, API_ENCRYPT_KEY);
-      config.headers = headers;
-      return config;
+    onRequest: (method: any) => {
+      if (!API_ENCRYPT_ENABLE) {
+        return method;
+      }
+      const { config } = method;
+      let aesKey = AES_KEY;
+
+      if (!method?.meta?.ignorEencrypt) {
+        if (method.type === 'GET' && method.url.indexOf('?') > -1) {
+          method.url = utils.buildUrl(method.url, aesKey);
+        } else {
+          const body: any = JSON.stringify(method.data);
+          // 处理 body 参数为 json 格式
+          if (body && typeof body == 'string' && utils.isJSON(body)) {
+            if (Object.keys(JSON.parse(body)).length > 0) {
+              method.data = utils.syEncry(body, aesKey);
+            } else {
+              method.data = '';
+            }
+          }
+          // 处理 body 为字符串的参数
+          if (body && typeof body == 'string' && !utils.isJSON(body)) {
+            method.data = utils.changeJsonParam(
+              method.body,
+              method.url,
+              aesKey,
+            );
+          }
+
+          // 处理 body 为 FormData 的参数
+          if (body && utils.isFormData(body)) {
+            body.forEach((v: any, k: any) => {
+              if (!v) {
+                body.set(k, '');
+              } else if (API_ENCRYPT_PARAM.indexOf(k) > -1) {
+                body.set(k, v);
+              } else if (Object.keys(API_ENCRYPT_EXPAND).length > 0) {
+                let isEncrypt = true;
+                for (let u in API_ENCRYPT_EXPAND) {
+                  let key = u.replaceAll('-', '/');
+                  let val = API_ENCRYPT_EXPAND[u];
+                  if (method.url.indexOf(key) > -1 && val.indexOf(k) > -1) {
+                    isEncrypt = false;
+                  }
+                }
+                if (isEncrypt) {
+                  body.set(k, utils.syEncry(v, aesKey));
+                } else {
+                  body.set(k, v);
+                }
+              } else {
+                v = decodeURIComponent(v);
+                body.set(k, utils.syEncry(v, aesKey));
+              }
+            });
+            method.data = body;
+          }
+
+          // 处理 url 上的参数
+          if (method.url.indexOf('?') > -1) {
+            method.url = utils.buildUrl(method.url, aesKey);
+          }
+        }
+        // 处理 params
+        if (
+          method.url.indexOf('?') == -1 &&
+          Object.keys(config.params).length > 0
+        ) {
+          let params = JSON.stringify(config.params);
+          config.params = utils.changeJsonParam(params, method.url, aesKey);
+        }
+
+        let headers = { ...config.headers };
+        headers[API_ENCRYPT_HEADER] = utils.asyEncry(aesKey, API_ENCRYPT_KEY);
+        config.headers = headers;
+        method.config = config;
+      }
+    },
+
+    /**
+     * 判断是否json字符串
+     * @param { } str
+     * @returns
+     */
+    isJSON: (str: string) => {
+      if (typeof str == 'string') {
+        try {
+          JSON.parse(str);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
     },
     /**
      * 处理url参数加密
@@ -57,9 +141,9 @@ export function createFilter<T>(config: T) {
     buildUrl: (url: string, aeskey: string) => {
       url = decodeURIComponent(url);
       let params: any = {},
-        tempArr: any = [];
+        tempArr = [];
       tempArr = url.split('?')[1].split('&');
-      tempArr.forEach((v: string) => {
+      tempArr.forEach((v) => {
         if (v.split('=')[0] && v.split('=')[0].indexOf('[]') >= 0) {
           //如果参数是数组 进行处理
           let key = v.split('=')[0].replace(/\[\]/, '');
@@ -86,11 +170,31 @@ export function createFilter<T>(config: T) {
       }
       return url;
     },
+    // json 参数转化
+    changeJsonParam: (body: any, url: string, aesKey: string) => {
+      let debody = decodeURIComponent(body);
+      let params: any = {},
+        tempArr = [];
+      tempArr = debody.split('&');
+      tempArr.map((v) => (params[v.split('=')[0]] = v.split('=')[1]));
+      let bodyStr = '';
+      if (params) {
+        params = utils.encryptParam(params, url, aesKey);
+
+        for (var k in params) {
+          bodyStr +=
+            (bodyStr.indexOf('=') != -1 ? '&' : '') +
+            k +
+            '=' +
+            encodeURIComponent(params[k]);
+        }
+      }
+      return bodyStr;
+    },
 
     md5: (data: string) => {
       return CryptoJS.MD5(data).toString();
     },
-
     // rsa 加密
     rsaEncrypt: (data: string, key: string) => {
       const encryptTool = new JSEncrypt();
@@ -121,31 +225,39 @@ export function createFilter<T>(config: T) {
     },
 
     // 生成随机的加密key
-    getAesKey: () => {
+    getAesKey: (len?: number) => {
+      let length = len || 16;
       // #ifndef MP-WEIXIN
+      let key = '';
       if (API_ENCRYPR_TYPE == 'sm') {
-        return utils.md5(
+        key = utils.md5(
           window.crypto.getRandomValues(new Uint32Array(1))[0] as any,
         );
       }
-      return utils
+      key = utils
         .md5(window.crypto.getRandomValues(new Uint32Array(1))[0] as any)
-        .substring(0, 16);
+        .substring(0, length);
+
+      AES_KEY = key;
       // #endif
       // #ifdef MP-WEIXIN
-      const Key = new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         // @ts-ignore
         wx.getRandomValues({
-          length: 6, // 生成 6 个字节长度的随机数,
+          length, // 生成 len 个字节长度的随机数,
           success: (res: any) => {
             // @ts-ignore
-            let key = wx.arrayBufferToBase64(res.randomValues);
-            // 转换为 base64 字符串后打印
+            let key = wx
+              .arrayBufferToBase64(res.randomValues)
+              .substring(0, length)
+              .toLocaleLowerCase();
+            AES_KEY = key;
+
             resolve(key);
           },
         });
       });
-      return Key;
+
       // #endif
     },
 
@@ -177,6 +289,7 @@ export function createFilter<T>(config: T) {
           obj[prop] = utils.syEncry(param[prop].toString(), aeskey);
         }
       }
+
       return obj;
     },
 
@@ -194,8 +307,11 @@ export function createFilter<T>(config: T) {
       }
       return utils.rsaEncrypt(data, key);
     },
+    isFormData: (v: any) => {
+      return Object.prototype.toString.call(v) === '[object FormData]';
+    },
   };
-
+  utils.getAesKey();
   utils.getConf();
-  return config;
+  return method;
 }

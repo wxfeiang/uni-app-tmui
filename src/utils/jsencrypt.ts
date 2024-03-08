@@ -1,18 +1,17 @@
 import { useSystemStore } from '@/store/modules/system';
-import { JSEncrypt } from 'jsencrypt';
+import JSEncrypt from 'jsencrypt';
+
 const store = useSystemStore();
 
 // 加密
 export function encrypt(txt: string) {
   let setPrivateKey = '';
-  if (store.strppd) {
-    setPrivateKey = store.strppd;
-  } else {
-    return;
+  if (store.dot) {
+    setPrivateKey = store.dot;
   }
   const encryptor = new JSEncrypt();
-  encryptor.setPrivateKey(setPrivateKey);
 
+  encryptor.setPublicKey(setPrivateKey); // 设置公钥
   return encryptor.encrypt(txt); // 对需要加密的数据进行加密
 }
 // 解密

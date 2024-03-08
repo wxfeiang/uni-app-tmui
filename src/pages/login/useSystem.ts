@@ -4,40 +4,53 @@ import {
   getDot,
   getResponseConfig,
 } from '@/services/api/system';
-import { useAuthStore } from '@/store/authStore';
+import { useSystemStore } from '@/store/modules/system';
 import { base64_encode } from '@/utils/base64Encode';
-const authStore = useAuthStore();
+import { changeRes } from '@/utils/encryptUtils';
+const systemStore = useSystemStore();
 
-const { data: captchaConfigData } = captchaConfig({
+const { data: captchaConfigData, onSuccess: sysConfigSuccess } = captchaConfig({
   immediate: true,
   loading: false,
 });
+sysConfigSuccess((data: any) => {
+  const newData = { ...data.data.data.data };
+  const code = changeRes(data.data, newData.paramId);
 
-const { data: getResponseConfigData, onSuccess: responseConfigSuccess } =
-  getResponseConfig({
-    immediate: true,
-    loading: false,
-  });
-responseConfigSuccess((data: any) => {
   //
+  newData.paramId = code;
+  systemStore.fILTERDATA(newData);
 });
 
+// 处理解密
+const { onSuccess: responseConfigSuccess } = getResponseConfig({
+  immediate: true,
+  loading: false,
+});
+responseConfigSuccess((data: any) => {
+  const code = changeRes(data.data, data.data.data.data.paramRespId);
+  systemStore.RESSTRPPD(code);
+});
+
+// 处理加密
 const { onSuccess: getDotSuccess } = getDot({
   immediate: true,
   loading: false,
 });
 getDotSuccess((data: any) => {
-  //
-  console.log('🥑', data);
+  const code = changeRes(data.data, data.data.data.data);
+  systemStore.DOT(code);
 });
 
-// 获取验证
+// 获取验证码
 const { send: getCodeUrl, onSuccess: codeSuccess } = getCode({
   immediate: true,
   loading: false,
 });
 const codeImg = ref('');
+const codeflog = ref('');
 codeSuccess((event: any) => {
+  codeflog.value = event.data.header.flag;
   let img = base64_encode(
     new Uint8Array(event.data.data).reduce(
       (data, byte) => data + String.fromCharCode(byte),
@@ -48,5 +61,5 @@ codeSuccess((event: any) => {
 });
 
 export default () => {
-  return { getResponseConfigData, captchaConfigData, codeImg, getCodeUrl };
+  return { captchaConfigData, codeImg, getCodeUrl, codeflog };
 };

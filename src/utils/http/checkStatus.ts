@@ -1,6 +1,6 @@
 import { Toast } from '@/utils/uniapi/prompt';
 
-export function checkStatus(status: number, msg: string): void {
+export function checkStatus(status: number, msg?: string): void {
   let errMessage = null;
   switch (status) {
     case 400:
@@ -22,7 +22,7 @@ export function checkStatus(status: number, msg: string): void {
       errMessage = '网络请求超时!';
       break;
     case 500:
-      errMessage = '服务器错误,请联系管理员!';
+      errMessage = `${msg || '服务器错误,请联系管理员!'}`;
       break;
     case 501:
       errMessage = '网络未实现!';
@@ -38,6 +38,9 @@ export function checkStatus(status: number, msg: string): void {
       break;
     case 505:
       errMessage = 'http版本不支持该请求!';
+      break;
+    case 0:
+      errMessage = '网络错误/网络连接超时!';
       break;
     default:
       errMessage = `${msg}`;

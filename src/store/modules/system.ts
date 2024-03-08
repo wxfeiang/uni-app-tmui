@@ -11,28 +11,34 @@ interface STSCONFIG {
 }
 
 export const useSystemStore = defineStore('systemStore', () => {
-  const appKey = ref('test');
+  const appKey = ref('app');
   const appSecret = ref('');
-  const strppd = ref('');
-  const resstrppd = ref('');
-  const filterData = ref(<STSCONFIG>{});
-  const secretStr = ref('');
-  const encryptId = ref('');
-  const userDId = ref('');
 
-  function SETAPPKEY(value: string) {
-    appKey.value = value;
+  const resstrppd = ref(''); // 解密
+  const filterData = ref(<STSCONFIG>{});
+  const userDId = ref('');
+  const dot = ref('');
+
+  function RESSTRPPD(value: string) {
+    resstrppd.value = value;
+  }
+
+  function fILTERDATA(value: STSCONFIG) {
+    filterData.value = value;
+  }
+  function DOT(value: string) {
+    dot.value = value;
   }
 
   return {
-    SETAPPKEY,
+    RESSTRPPD,
+    fILTERDATA,
+    DOT,
     appKey,
     appSecret,
-    strppd,
     resstrppd,
     filterData,
-    secretStr,
-    encryptId,
     userDId,
+    dot,
   };
 });
