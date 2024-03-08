@@ -2,6 +2,7 @@ import uni from '@dcloudio/vite-plugin-uni';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { resolve } from 'path';
 import TransformPages from 'uni-read-pages-vite';
+import removeConsole from 'vite-plugin-remove-console';
 
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
@@ -14,6 +15,7 @@ export default ({ command, mode }: ConfigEnv) => {
     plugins: [
       uni(),
       vueJsx(),
+      removeConsole(),
       // Unocss({
       //   presets: [presetUno()],
       // }),
