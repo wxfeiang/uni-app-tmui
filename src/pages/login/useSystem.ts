@@ -3,6 +3,7 @@ import {
   getCode,
   getDot,
   getResponseConfig,
+  getSpecial,
 } from '@/services/api/system';
 import { useSystemStore } from '@/store/modules/system';
 import { base64_encode } from '@/utils/base64Encode';
@@ -60,6 +61,18 @@ codeSuccess((event: any) => {
   codeImg.value = 'data:image/gif;base64,' + img;
 });
 
+const { send: getSpecialList, data: listINfo } = getSpecial({
+  immediate: false,
+  loading: false,
+});
+
 export default () => {
-  return { captchaConfigData, codeImg, getCodeUrl, codeflog };
+  return {
+    captchaConfigData,
+    codeImg,
+    getCodeUrl,
+    codeflog,
+    getSpecialList,
+    listINfo,
+  };
 };

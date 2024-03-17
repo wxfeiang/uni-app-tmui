@@ -82,3 +82,21 @@ export function getCode(config: any) {
 export function login(params: LoginParams, config: any) {
   return useRequest(request.Post(LOGIN, params), { ...config });
 }
+
+// 列表测试
+
+export const getSpecial = (config: any) => {
+  const methodInstance = request.Post(
+    'product/api/decorationSpecial/getSpecialList',
+    {
+      shopId: '1650686449834549250',
+      applicationId: '1574601415183278081',
+    },
+    // {
+    //   params: {
+    //     test: 1,
+    //   },
+    // },
+  );
+  return useRequest(methodInstance, config);
+};

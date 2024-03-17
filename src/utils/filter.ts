@@ -199,6 +199,7 @@ export function createFilter<T>(method: T) {
     rsaEncrypt: (data: string, key: string) => {
       const encryptTool = new JSEncrypt();
       encryptTool.setPublicKey(key);
+
       return encryptTool.encrypt(data);
     },
 
@@ -239,6 +240,7 @@ export function createFilter<T>(method: T) {
         .substring(0, length);
 
       AES_KEY = key;
+
       // #endif
       // #ifdef MP-WEIXIN
       return new Promise((resolve, reject) => {

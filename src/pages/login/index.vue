@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { Login, tesToken, loginFrom, rules } = useLogin();
-const { captchaConfigData, codeImg, getCodeUrl } = useSystem();
+const { captchaConfigData, codeImg, getCodeUrl, getSpecialList, listINfo } = useSystem();
 const router = useRouter();
 const form = ref(null);
 function goto() {
@@ -44,5 +44,5 @@ function goto() {
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>
     </tm-form>
   </tm-sheet>
-  <view class="fontFily"> asdca </view>
+  <view class="fontFily" @click="getSpecialList"> 测试请求数据列表{{ listINfo }} </view>
 </template>
