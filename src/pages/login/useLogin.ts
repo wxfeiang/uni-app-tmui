@@ -46,6 +46,7 @@ const { send: tesToken, data: authInfo } = testToken({
   immediate: true, // 默认不发出请求
   initialData: {},
 });
+console.log('🌽[authInfo]:', authInfo.value);
 
 const {
   onSuccess: tesFile,
