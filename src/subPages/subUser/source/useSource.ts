@@ -1,5 +1,9 @@
-import { router } from '@/router';
-import { getTypeList, getcontentList } from '@/services/api/source';
+import router from '@/router'; // js文件使用方法
+import {
+  getTypeList,
+  getcontentDesc,
+  getcontentList,
+} from '@/services/api/source';
 import { arrGroup } from '@/utils';
 
 const { onSuccess: suessTypeList } = getTypeList({
@@ -26,10 +30,8 @@ suessTypeList((e: any) => {
 
 const activeIndex = ref(0);
 const SegtabClick = (e: any) => {
-  console.log('🥖[e]:', e);
   activeIndex.value = e;
   currEntValue.value = typeList.value[activeIndex.value];
-  console.log('🥜[currEntValue.value]:', currEntValue.value);
 };
 
 const cellClick = (item: any) => {
@@ -45,10 +47,26 @@ const { send: getList } = getcontentList({
 });
 
 const suessList = async (params: any) => {
-  console.log('🥡[params]:', params);
   if (params.type) {
     const data: any = await getList(params);
     curentlist.value = data.list;
+  } else {
+    return;
+  }
+};
+
+const paramsDesc = ref({});
+const curentDesclist = ref([]);
+
+const { send: getDesc } = getcontentDesc({
+  immediate: false, // 默认不发出请求
+  initialData: [],
+});
+
+const suessDesc = async (params: any) => {
+  if (params.type) {
+    const data: any = await getDesc(params);
+    curentDesclist.value = data.list;
   } else {
     return;
   }
@@ -67,5 +85,9 @@ export default () => {
     paramsData,
     title,
     curentlist,
+
+    suessDesc,
+    curentDesclist,
+    paramsDesc,
   };
 };

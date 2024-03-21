@@ -69,6 +69,14 @@
 						"navigationStyle":"custom",
 						"navigationBarTitleText": "资源列表"
 					}
+				},
+				{
+					"path": "source/desc",
+					"name": "sourceDesc",
+					"style": {
+						"navigationStyle":"custom",
+						"navigationBarTitleText": "资源详情"
+					}
 				}
 
 
