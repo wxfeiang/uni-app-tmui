@@ -35,7 +35,7 @@ export default ({ command, mode }: ConfigEnv) => {
             imports: ['createRouter', 'useRouter', 'useRoute'],
           },
         ],
-        dirs: ['src/composables/**/*', 'src/pages/**/*'],
+        dirs: ['src/composables/**/*', 'src/pages/**/*', 'src/subPages/**/*'],
         dts: 'typings/auto-imports.d.ts',
         // 解决eslint报错问题
         eslintrc: {

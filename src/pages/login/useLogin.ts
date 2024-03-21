@@ -1,10 +1,9 @@
 import { router } from '@/router'; // js文件使用方法
-import { downFile, login, login2, testToken } from '@/services/api/auth';
+import { downFile, login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
 const authStore = useAuthStore();
 //
-import { useRequest } from 'alova';
 
 const rules = {
   username: [
@@ -24,9 +23,6 @@ const loginFrom = ref(<LoginParams>{
   password: '123456',
 });
 
-const { send: sendLogin } = useRequest(login(loginFrom.value), {
-  immediate: false,
-});
 const { send: sendLogin2 } = login2(loginFrom.value, {
   immediate: false,
   loading: false,

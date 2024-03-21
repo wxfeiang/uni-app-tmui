@@ -54,9 +54,9 @@ function laodingfun(val: any) {
         @click="acc = 4"
         activeColor="orange"
         :count="8"
-        url="/pages/chart/index"
+        url="/pages/user/index"
         active
-        text="图表中心"
+        text="我的"
         unicon="tmicon-account"
         icon="tmicon-userplus-fill"
       ></tm-tabbar-item>

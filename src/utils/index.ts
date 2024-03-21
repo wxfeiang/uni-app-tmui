@@ -36,3 +36,21 @@ export function downBuffFile(res: any) {
   dom.click();
   document.body.removeChild(dom);
 }
+
+/**
+ * @description: 对数组对象相同的分组
+ * @param {} arr 数组
+ * @param {} fn (item: any) => item.type
+ * @return {} 返回分组后数据
+ */
+export function arrGroup(arr: any, fn: any) {
+  const obj: any = {};
+  arr.forEach((item: any) => {
+    const key: string = JSON.stringify(fn(item));
+    obj[key] = obj[key] || [];
+    obj[key].push(item);
+  });
+  return Object.keys(obj).map((k) => {
+    return obj[k];
+  });
+}
