@@ -16,9 +16,9 @@
 		{
 			"path": "pages/index/index",
 			"name":"Index",
-			"meta": {
-				"ignoreAuth": true
-			},
+			// "meta": {
+			// 	"ignoreAuth": true
+			// },
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
@@ -44,12 +44,14 @@
 			"pages": [
 				{
 					"path": "about/index",
+					"name":"About",
 					"style": {
 						"navigationBarTitleText": "关于我的"
 					}
 				},
 				{
 					"path": "vip/index",
+					"name":"Vip",
 					"style": {
 						"navigationBarTitleText": "vip"
 					}

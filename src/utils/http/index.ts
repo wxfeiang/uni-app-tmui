@@ -58,10 +58,7 @@ const alovaInstance = createAlova({
       const { statusCode, data: rawData } = response;
       const { code, message, data } = rawData as API;
       // 返回所有结果
-      if (
-        (statusCode == 200 && meta?.resAll) ||
-        (statusCode == 201 && responseType)
-      ) {
+      if (statusCode == 200 && (meta?.resAll || responseType)) {
         return response;
       }
       // 返回data

@@ -1,4 +1,4 @@
-import { router } from '@/router'; // js文件使用方法
+import router from '@/router'; // js文件使用方法
 import { downFile, login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
@@ -42,6 +42,7 @@ const { send: tesToken, data: authInfo } = testToken({
   immediate: true, // 默认不发出请求
   initialData: {},
 });
+console.log('🌽[authInfo]:', authInfo.value);
 
 const {
   onSuccess: tesFile,
