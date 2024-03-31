@@ -1,3 +1,7 @@
+
+let __unconfig_data;
+let __unconfig_stub = function (data = {}) { __unconfig_data = data };
+__unconfig_stub.default = (data = {}) => { __unconfig_data = data };
 import uni from '@dcloudio/vite-plugin-uni';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { resolve } from 'path';
@@ -8,7 +12,7 @@ import Components from 'unplugin-vue-components/vite';
 import type { ConfigEnv } from 'vite';
 import { loadEnv } from 'vite';
 import removeConsole from 'vite-plugin-remove-console';
-export default ({ command, mode }: ConfigEnv) => {
+const __unconfig_default =  ({ command, mode }: ConfigEnv) => {
   console.log('🍔[command]:', command);
   const env = loadEnv(mode, __dirname);
   const result = {
@@ -98,3 +102,5 @@ export default ({ command, mode }: ConfigEnv) => {
   };
   return result;
 };
+
+if (typeof __unconfig_default === "function") __unconfig_default(...[{"command":"serve","mode":"development"}]);export default __unconfig_data;

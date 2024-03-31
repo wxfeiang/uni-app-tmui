@@ -1,5 +1,14 @@
 <script lang="ts" setup>
-const { Login, tesToken, loginFrom, rules, authInfo, download } = useLogin();
+const {
+  Login,
+  tesToken,
+  loginFrom,
+  rules,
+  authInfo,
+  download,
+  codeimg,
+  getcode,
+} = useLogin();
 const router = useRouter();
 const form = ref(null);
 function goto() {
@@ -26,6 +35,19 @@ function goto() {
           placeholder="密码"
           v-model="loginFrom.password"
         >
+        </tm-input>
+      </tm-form-item>
+      <tm-form-item field="code" :rules="rules.code">
+        <tm-input placeholder="验证码" v-model="loginFrom.code">
+          <template #right>
+            <!-- <tm-image
+              :width="200"
+              :height="50"
+              :src="codeImg"
+              @click="getcode"
+            ></tm-image> -->
+            <view v-html="codeimg" @click="getcode" class="w-200 h-50"></view>
+          </template>
         </tm-input>
       </tm-form-item>
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>

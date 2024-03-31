@@ -52,6 +52,7 @@ const alovaInstance = createAlova({
      * @param method
      */
     onSuccess: async (response, method) => {
+
       const { config, meta } = method;
       const { enableDownload, enableUpload, responseType } = config;
       // @ts-ignore
@@ -62,7 +63,7 @@ const alovaInstance = createAlova({
         return response;
       }
       // 返回data
-      if (code === 200) {
+      if (code == 200) {
         if (enableDownload) {
           // 下载处理
           return rawData;
@@ -88,6 +89,7 @@ const alovaInstance = createAlova({
      * @param method
      */
     onError: (err, method) => {
+      console.log('🥔[err]:', err);
       // error('Request Error!');
 
       return Promise.reject({ err, method });

@@ -1,5 +1,5 @@
 import router from '@/router'; // js文件使用方法
-import { downFile, login2, testToken } from '@/services/api/auth';
+import { captchaImage, downFile, login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
 const authStore = useAuthStore();
@@ -17,10 +17,15 @@ const rules = {
     required: true,
     message: '密码不能为空',
   },
+  code:{
+    required: true,
+    message: '验证码不能为空',
+  }
 };
 const loginFrom = ref(<LoginParams>{
   username: 'admin',
   password: '123456',
+  code: ''
 });
 
 const { send: sendLogin2 } = login2(loginFrom.value, {
@@ -30,6 +35,7 @@ const { send: sendLogin2 } = login2(loginFrom.value, {
 
 const Login = async (form: any) => {
   if (form.validate) {
+
     const { token }: any = await sendLogin2();
     authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
@@ -38,12 +44,17 @@ const Login = async (form: any) => {
   }
 };
 
-const { send: tesToken, data: authInfo } = testToken({
+const { send: getcode, data: codeimg } = captchaImage({
   immediate: true, // 默认不发出请求
   initialData: {},
 });
-console.log('🌽[authInfo]:', authInfo.value);
 
+
+
+const { send: tesToken, data: authInfo } = testToken({
+  immediate: false, // 默认不发出请求
+  initialData: {},
+});
 const {
   onSuccess: tesFile,
   data: FileData,
@@ -57,5 +68,5 @@ tesFile((e: any) => {
 });
 
 export default () => {
-  return { Login, tesToken, loginFrom, rules, authInfo, download };
+  return { Login, tesToken, loginFrom, rules, authInfo, download,codeimg,getcode };
 };

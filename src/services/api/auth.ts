@@ -5,6 +5,7 @@ const LOGIN_OUT = '/logout';
 const REFRESH_TOKEN = '/refresh/token';
 const TEST_TOKEN = '/employee/test';
 const DOWNFILE = '/employee/exporeList';
+const CODEIMG = '/base/captchaImage';
 /**
  * 登录
  * @param params
@@ -15,6 +16,10 @@ export function login(params: LoginParams) {
 export function login2(params: LoginParams, config: any) {
   return useRequest(request.Post(LOGIN, params), { ...config });
 }
+export function captchaImage(config: any) {
+  return useRequest(request.Post(CODEIMG), { ...config });
+}
+
 /**
  * 测试token
  * @param params
@@ -55,15 +60,15 @@ export const testToken = (config: any) => {
 //   return useRequest(methodInstance, config);
 // };
 export const downFile = (config: any) => {
-  const methodInstance = request.Get(DOWNFILE, {
+  const methodInstance = request.Post(DOWNFILE, {
     params: {
       userId: 2,
     },
     responseType: 'arraybuffer',
   });
-  methodInstance.meta = {
-    ignoreToken: true,
-  };
+  // methodInstance.meta = {
+  //   ignoreToken: true,
+  // };
 
   return useRequest(methodInstance, config);
 };
