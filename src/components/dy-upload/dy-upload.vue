@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { file } from "@/tmui/components/tm-upload/upload";
+import { Toast } from "@/utils/uniapi/prompt";
+const baseUrl = "http://47.99.93.97/v1/";
 const props = defineProps({
   urls: {
     type: String,
@@ -10,26 +12,14 @@ const props = defineProps({
     default: "",
   },
 });
+const emit = defineEmits(["update:urls"]);
 const header = ref({
   host: "",
 });
 // 把传入的图片字符串转化数组格式
 const list: any = ref([]);
-// watch(
-//   () => [props.urls],
-//   (newV, oldV) => {
-//     console.log("🍜[newV,oldV]:", newV, oldV);
-//     const arrr = props.urls.split(",");
-//     console.log("🥥[arrr]:", arrr);
-//     list.value = arrr.map((url) => {
-//       // return "http://47.99.93.97/v1" + url;
-//       return {
-//         url: "http://47.99.93.97/v1" + url,
-//       };
-//     });
-//   }
-// );
-const test = (item: file) => {
+
+const onSuccessAfter = (item: file) => {
   let d = item.response;
   let isOk = true;
   try {
@@ -43,41 +33,63 @@ const test = (item: file) => {
 
   return isOk;
 };
-const complateFile = (file: file) => {
-  console.log(file);
-};
+const complateFile = (file: file) => {};
 const onStart = (item: any) => {
-  console.log("🍑[item]:", item);
+  //
   return true;
 };
 const success = (item: any) => {
-  console.log("🍒[item]:", item);
+  let curl = JSON.parse(item.response).data.url;
+  emit("update:urls", props.urls + "," + curl);
+};
+const fail = (item: any, fileList: any) => {
+  Toast(item.status, { duration: 5000 });
+  list.value.filter((i: any) => i.scanCode == 3);
+};
+const remove = (item: any) => {
+  console.log("🥕[item]:", item);
+  let c =
+    item.response && item.statusCode == 3
+      ? baseUrl + JSON.parse(item.response).data.url
+      : item.url;
+  const arr = changeImg(props.urls)
+    .filter((i: any) => i !== c)
+    .map((i: any) => i.replace(baseUrl, ""))
+    .join(",");
+  emit("update:urls", arr);
 };
 
 // 改不变默认有值的请情况
 const changeImg = (str: any) => {
   if (!str) return [];
-  return str.split(",").map((url: string) => "http://47.99.93.97/v1" + url);
+  return str.split(",").map((url: string) => baseUrl + url);
 };
+onMounted(() => {
+  list.value = changeImg(props.urls);
+});
+watch(
+  () => [props.urls],
+  (n, o) => {
+    list.value = changeImg(n[0]);
+  }
+);
 </script>
 <template>
   <view v-bind="$attrs"> </view>
-  {{ urls }}
-  <view>=======================</view>
-
-  {{ list }}
   <tm-upload
     :imageHeight="200"
     :rows="2"
     v-model="list"
-    :default-value="changeImg(props.urls)"
+    :default-value="list"
     ref="up"
-    :onSuccessAfter="test"
+    :onSuccessAfter="onSuccessAfter"
     @complate="complateFile"
     @success="success"
     :onStart="onStart"
+    @remove="remove"
     :width="636"
-    url="http://47.99.93.97/v1/base/uploadLocal"
+    @fail="fail"
+    url="http://47.99.93.97/v1/base/uploadLocals"
   >
     <template v-slot:icon>
       <tm-text label="上传"></tm-text>

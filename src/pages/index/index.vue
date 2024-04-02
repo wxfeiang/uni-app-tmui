@@ -11,8 +11,11 @@ function laodingfun(val: any) {
 const dateStr = ref("");
 const showdate = ref(false);
 const urls = ref(
-  "/public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png,/public/uploads/image/1711869878456-3045e1d1-c798-46b5-833e-1d03a0755267.jpg"
+  "public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png,public/uploads/image/1711869878456-3045e1d1-c798-46b5-833e-1d03a0755267.jpg"
 );
+function getform() {
+  console.log(urls.value);
+}
 </script>
 <template>
   <tm-app>
@@ -20,7 +23,16 @@ const urls = ref(
       <tm-text label="点击中间+按钮可以体验异步加载动态效果."></tm-text>
     </tm-sheet>
     <tm-sheet>
-      <dy-upload :urls="urls" width="220px"></dy-upload>
+      <dy-upload v-model:urls="urls" :max="5"></dy-upload>
+    </tm-sheet>
+    <tm-sheet>
+      <tm-button
+        :margin="[10]"
+        :shadow="0"
+        label="获取表单数据"
+        @click="getform"
+        :width="350"
+      ></tm-button>
     </tm-sheet>
     <tm-tabbar :autoSelect="false" v-model:active="acc">
       <tm-tabbar-item
