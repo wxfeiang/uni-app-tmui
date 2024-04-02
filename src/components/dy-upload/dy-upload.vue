@@ -43,15 +43,18 @@ const success = (item: any) => {
   emit("update:urls", props.urls + "," + curl);
 };
 const fail = (item: any, fileList: any) => {
-  Toast(item.status, { duration: 5000 });
-  list.value.filter((i: any) => i.scanCode == 3);
+  Toast(item.status);
+  list.value = list.value.filter((i: any) => i.scanCode == 3);
+  emit("update:urls", props.urls + "," + item.url);
 };
 const remove = (item: any) => {
-  console.log("🥕[item]:", item);
   let c =
     item.response && item.statusCode == 3
       ? baseUrl + JSON.parse(item.response).data.url
+      : item.url.indexOf("blob") > -1
+      ? baseUrl + item.url
       : item.url;
+
   const arr = changeImg(props.urls)
     .filter((i: any) => i !== c)
     .map((i: any) => i.replace(baseUrl, ""))
@@ -76,6 +79,7 @@ watch(
 </script>
 <template>
   <view v-bind="$attrs"> </view>
+  {{ urls }}
   <tm-upload
     :imageHeight="200"
     :rows="2"
