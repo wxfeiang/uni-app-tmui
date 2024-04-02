@@ -49,14 +49,18 @@ const { send: sendLogin2 } = login2(
 const Login = async (form: any) => {
   if (form.validate) {
     newData.value = {
-      appKey: 'app',
+      appKey: 'default',
       na: loginFrom.value.na,
       ps: encodeURI(encrypt(loginFrom.value.ps) as string),
       co: loginFrom.value.co,
-      u: codeflog,
+      u: codeflog.value,
       type: 1,
       terminal: 'WEAPP',
     };
+
+
+    console.log('🌭[newData.value]:', newData.value);
+
     try {
       const { token }: any = await sendLogin2(newData.value);
       authStore.SETTIKEN(token);
