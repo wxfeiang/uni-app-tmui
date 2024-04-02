@@ -105,11 +105,11 @@ export function changeRes(res: any, code: string) {
   return code;
 }
 // 返回参数解密
-export function responseAes(response: any) {
-  let aesRes = decrypt(response.header.responsek);
-  let aesResiv = decrypt(response.header.responsev);
+export function responseAes(res: any) {
+  let aesRes = decrypt(res.header.responsek || res.header.Responsek);
+  let aesResiv = decrypt(res.header.responsev || res.header.Responsev);
   if (!aesRes || !aesResiv) {
     return { msg: '解密出现问题了----' };
   }
-  return JSON.parse(Decrypt(response.data, aesRes, aesResiv) as any);
+  return JSON.parse(Decrypt(res.data, aesRes, aesResiv) as any);
 }
