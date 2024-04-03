@@ -46,6 +46,14 @@ const fail = (item: any, fileList: any) => {
   Toast(item.status);
   list.value = list.value.filter((i: any) => i.scanCode == 3);
   emit("update:urls", props.urls + "," + item.url);
+  //FIX: 1000s后清除失败的图片
+  setTimeout(() => {
+    const arr = changeImg(props.urls)
+      .filter((i: any) => i !== baseUrl + item.url)
+      .map((i: any) => i.replace(baseUrl, ""))
+      .join(",");
+    emit("update:urls", arr);
+  }, 1000);
 };
 const remove = (item: any) => {
   let c =
@@ -79,7 +87,6 @@ watch(
 </script>
 <template>
   <view v-bind="$attrs"> </view>
-  {{ urls }}
   <tm-upload
     :imageHeight="200"
     :rows="2"
@@ -93,7 +100,7 @@ watch(
     @remove="remove"
     :width="636"
     @fail="fail"
-    url="http://47.99.93.97/v1/base/uploadLocals"
+    url="http://47.99.93.97/v1/base/uploadLocal"
   >
     <template v-slot:icon>
       <tm-text label="上传"></tm-text>
