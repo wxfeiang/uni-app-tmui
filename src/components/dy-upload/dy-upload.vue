@@ -103,7 +103,6 @@ watch(
 );
 </script>
 <template>
-  <view v-bind="$attrs"> </view>
   {{ uploadUrl }}
   <tm-upload
     v-model="list"

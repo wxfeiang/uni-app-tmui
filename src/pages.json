@@ -14,6 +14,13 @@
 			}
 		},
 		{
+			"path": "pages/form/index",
+			"name":"Form",
+			"style": {
+
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"name":"Index",
 			// "meta": {

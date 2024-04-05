@@ -10,8 +10,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     DyDown: typeof import('./../src/components/dy-down/dy-down.vue')['default']
+    DyFrom: typeof import('./../src/components/dy-form/dy-from.vue')['default']
     DyUpload: typeof import('./../src/components/dy-upload/dy-upload.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Types: typeof import('./../src/components/dy-form/types/types.ts')['default']
+    Utils: typeof import('./../src/components/dy-form/utils.ts')['default']
   }
 }

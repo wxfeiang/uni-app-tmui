@@ -66,8 +66,8 @@ function getform() {
       <tm-tabbar-item
         @click="acc = 3"
         activeColor="orange"
-        url="/pages/fankui/index"
-        text="反馈分类"
+        url="/pages/form/index"
+        text="表单组件"
         unicon="tmicon-like"
         icon="tmicon-heart-fill"
       ></tm-tabbar-item>
