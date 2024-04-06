@@ -146,7 +146,7 @@
         "title": "tmui3. 模板",
         "router": {
             "mode": "hash",
-            "base": "/"
+            "base": "./"
         },
         "optimization": {
             "treeShaking": {
