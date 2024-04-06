@@ -11,15 +11,16 @@ const formVal = ref({
   slider: 40,
   segtab: "2",
   stepper: 20,
-  pickerStr: "李子",
-  pickerIndex: [3],
+  pickerIndex: [], // 弹出选中的 和绑定的字段不一样
 
   date: [],
   dateStr: "",
 
   time: "",
   time2: "",
-  city: [],
+  time3: [],
+  time3Str: [],
+  city: ["11", "1101", "110119"],
   cityStr: "",
   keyboard: "",
 });
@@ -150,6 +151,7 @@ const options = ref<FormOptions[]>([
       ],
     },
   },
+
   {
     type: "stepper",
     value: "",
@@ -247,6 +249,21 @@ const options = ref<FormOptions[]>([
       showDetail: { year: false, month: false, day: false, hour: true },
     },
   },
+  {
+    type: "time-between",
+    value: "",
+    label: "时间范围",
+    prop: "time3",
+    pickerIndex: "time3Str",
+    pickerShow: false,
+    placeholder: "请选择",
+    rules: [{ required: true, message: "请选择时间" }],
+    // typeAttrs: {
+    //   // format: "YYYY年MM月DD日",
+    //   showDetail: { year: false, month: false, day: false, hour: true },
+    // },
+  },
+
   {
     type: "time-picker",
     value: "",

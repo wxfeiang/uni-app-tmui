@@ -33,9 +33,8 @@ let initForm = () => {
     let r: any = {};
     let s: any = {};
     props.options.map((item: FormOptions) => {
-      // m[item.prop!] =  props.!formVal[item.prop!];
+      m[item.prop!] = props.formVal[item.prop!];
       r[item.prop!] = item.rules;
-
       // if (item.type === "editor") {
       //   // 初始化富文本
       //   nextTick(() => {
@@ -52,17 +51,21 @@ let initForm = () => {
       //     }
       //   });
       // }
-      // if (item.type === "picker" && item.pickerIndex) {
-      //   m[item.pickerIndex!] = props.formVal[item.pickerIndex!];
-      // } else {
-      //   m[item.prop!] = props.formVal[item.prop!];
-      // }
+
+      // 所有的弹框标志
       if (item.pickerShow == false) {
         s[item.prop!] = item.pickerShow;
       }
+      // 单选弹出框option匹配
+      if (item.type === "picker") {
+        let cur = props.formVal[item.pickerIndex!][0];
+        // 转换出显示的内容
+        m[item.prop!] = item.typeAttrs.columns.find((i: any) => i.id == cur)?.text ?? "";
+      }
     });
 
-    model.value = cloneDeep(props.formVal as object);
+    // model.value = cloneDeep(props.formVal as object);
+    model.value = cloneDeep(m);
     rules.value = cloneDeep(r);
     showPicker.value = cloneDeep(s);
   }
@@ -171,8 +174,8 @@ const confirm = (e: any) => {
             v-model="model[item.pickerIndex!]"
           ></tm-picker>
         </template>
+        <!-- 日期选择 -->
         <template v-if="item.type === 'date-picker'">
-          <!-- 日期选择 -->
           <view
             @click="showPicker[item.prop!] = !showPicker[item.prop!]"
             class="flex flex-row flex-row-center-between"
@@ -196,9 +199,8 @@ const confirm = (e: any) => {
             v-bind="item.typeAttrs"
           ></tm-calendar>
         </template>
+        <!-- 时间选择 -->
         <template v-if="item.type === 'time-picker'">
-          <!-- 时间选择 -->
-
           <view
             @click="showPicker[item.prop!] = !showPicker[item.prop!]"
             class="flex flex-row flex-row-center-between"
@@ -219,6 +221,34 @@ const confirm = (e: any) => {
             v-model:show="showPicker[item.prop!]"
             v-bind="item.typeAttrs"
           ></tm-time-picker>
+        </template>
+        <!-- 时间选择范围 -->
+        <template v-if="item.type === 'time-between'">
+          <view
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
+            class="flex flex-row flex-row-center-between"
+          >
+            <tm-text
+              :userInteractionEnabled="false"
+              :label="model[item.prop!].join('~')|| '请选择'"
+            ></tm-text>
+            <tm-icon
+              :userInteractionEnabled="false"
+              :font-size="24"
+              name="tmicon-angle-right"
+            ></tm-icon>
+          </view>
+
+          <tm-drawer v-model:show="showPicker[item.prop!]" :height="900" hideHeader>
+            <view class="pa-16">
+              <tm-time-between
+                @confirm="showPicker[item.prop!] = !showPicker[item.prop!]"
+                v-model="model[item.pickerIndex!]"
+                v-model:model-str="model[item.prop!]"
+                :default-value="model[item.pickerIndex!]"
+              ></tm-time-between>
+            </view>
+          </tm-drawer>
         </template>
         <template v-if="item.type === 'city-picker'">
           <!-- 地区选择-->
@@ -245,6 +275,7 @@ const confirm = (e: any) => {
           >
           </tm-city-picker>
         </template>
+
         <!-- 特殊键盘 -->
         <template v-if="item.type === 'keyboard'">
           <view
