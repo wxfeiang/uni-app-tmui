@@ -83,7 +83,7 @@ watch(
 );
 
 const confirm = (e: any) => {
-  console.log(model.value, e.validate);
+  console.log(model.value, e);
 };
 </script>
 

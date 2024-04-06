@@ -213,27 +213,11 @@ const options = ref<FormOptions[]>([
     placeholder: "请选择",
     pickerShow: false,
     rules: [{ required: true, message: "请选择日期" }],
-    // formItemAttrs: {
-    //   class:"flex flex-row flex-row-center-between"
-    // },
     typeAttrs: {
       format: "YYYY年MM月DD日",
       model: "quarter", ///  day week month quarter year rang
-      dateStyle: [
-        // 选中特定日期
-        // {
-        //   date: "2022-12-8", //日期
-        //   text: false, //浅色背景。
-        //   color: "red", //主题色.
-        //   extra: "测试", //额外的内容，在日期下方显示的文本。
-        // },
-        // {
-        //   date: "2022-12-24", //日期
-        //   text: false, //浅色背景。
-        //   color: "orange", //主题色.
-        //   extra: "签到", //额外的内容，在日期下方显示的文本。
-        // },
-      ],
+      start: "2024-01-01",
+      end: "2024-12-31",
     },
   },
   {
