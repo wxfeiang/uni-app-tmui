@@ -56,7 +56,7 @@ const success = (item: file) => {
 };
 // 上传失败
 const fail = (item: file) => {
-  Toast(item.status + "上传失败");
+  Toast(item.status as string);
 
   list.value = list.value.filter((i: file) => i.statusCode == 3);
   emit("update:urls", props.urls + "," + item.url);

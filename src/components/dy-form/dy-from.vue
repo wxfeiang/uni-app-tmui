@@ -22,6 +22,7 @@ let props = defineProps({
 });
 let model = ref<any>(null);
 let rules = ref<any>(null);
+let showPicker = ref<any>(null);
 //let form = ref<FormInstance | null>()
 let edit = ref();
 
@@ -30,9 +31,11 @@ let initForm = () => {
   if (props.options && props.options.length) {
     let m: any = {};
     let r: any = {};
+    let s: any = {};
     props.options.map((item: FormOptions) => {
       // m[item.prop!] =  props.!formVal[item.prop!];
       r[item.prop!] = item.rules;
+
       // if (item.type === "editor") {
       //   // 初始化富文本
       //   nextTick(() => {
@@ -54,9 +57,14 @@ let initForm = () => {
       // } else {
       //   m[item.prop!] = props.formVal[item.prop!];
       // }
+      if (item.pickerShow == false) {
+        s[item.prop!] = item.pickerShow;
+      }
     });
+
     model.value = cloneDeep(props.formVal as object);
     rules.value = cloneDeep(r);
+    showPicker.value = cloneDeep(s);
   }
 };
 onMounted(async () => {
@@ -70,7 +78,6 @@ watch(
   },
   { deep: true }
 );
-const showPicker = ref(false);
 
 const confirm = (e: any) => {
   console.log(model.value, e.validate);
@@ -84,7 +91,7 @@ const confirm = (e: any) => {
         :label="item.label"
         :field="item.prop"
         :rules="item.rules"
-        v-bind="item.labelAttrs"
+        v-bind="item.formItemAttrs"
       >
         <!-- 单选 -->
         <tm-radio-group v-model="model[item.prop!]" v-if="item.type === 'radio-group'">
@@ -143,7 +150,7 @@ const confirm = (e: any) => {
         <!-- 弹出选择 -->
         <template v-if="item.type === 'picker'">
           <view
-            @click="showPicker = !showPicker"
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
             class="flex flex-row flex-row-center-between"
           >
             <tm-text
@@ -159,10 +166,108 @@ const confirm = (e: any) => {
           <tm-picker
             v-bind="item.typeAttrs"
             v-model:model-str="model[item.prop!]"
-            v-model:show="showPicker"
+            v-model:show="showPicker[item.prop!]"
             :default-value="model[item.pickerIndex!]"
             v-model="model[item.pickerIndex!]"
           ></tm-picker>
+        </template>
+        <template v-if="item.type === 'date-picker'">
+          <!-- 日期选择 -->
+          <view
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
+            class="flex flex-row flex-row-center-between"
+          >
+            <tm-text
+              :userInteractionEnabled="false"
+              :label="model[item.pickerIndex!]|| '请选择'"
+            ></tm-text>
+            <tm-icon
+              :userInteractionEnabled="false"
+              :font-size="24"
+              name="tmicon-angle-right"
+            ></tm-icon>
+          </view>
+
+          <tm-calendar
+            v-model="model[item.prop!]"
+            v-model:show="showPicker[item.prop!]"
+            v-model:model-str="model[item.pickerIndex!]"
+            :default-value="model[item.prop!]"
+            v-bind="item.typeAttrs"
+          ></tm-calendar>
+        </template>
+        <template v-if="item.type === 'time-picker'">
+          <!-- 时间选择 -->
+
+          <view
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
+            class="flex flex-row flex-row-center-between"
+          >
+            <tm-text
+              :userInteractionEnabled="false"
+              :label="model[item.prop!]|| '请选择'"
+            ></tm-text>
+            <tm-icon
+              :userInteractionEnabled="false"
+              :font-size="24"
+              name="tmicon-angle-right"
+            ></tm-icon>
+          </view>
+
+          <tm-time-picker
+            v-model="model[item.prop!]"
+            v-model:show="showPicker[item.prop!]"
+            v-bind="item.typeAttrs"
+          ></tm-time-picker>
+        </template>
+        <template v-if="item.type === 'city-picker'">
+          <!-- 地区选择-->
+          <view
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
+            class="flex flex-row flex-row-center-between"
+          >
+            <tm-text
+              :userInteractionEnabled="false"
+              :label="model[item.prop!]|| '请选择'"
+            ></tm-text>
+            <tm-icon
+              :userInteractionEnabled="false"
+              :font-size="24"
+              name="tmicon-angle-right"
+            ></tm-icon>
+          </view>
+          <tm-city-picker
+            v-model="model[item.pickerIndex!]"
+            v-model:model-str="model[item.prop!]"
+            v-model:show="showPicker[item.prop!]"
+            :default-value="model[item.pickerIndex!]"
+            v-bind="item.typeAttrs"
+          >
+          </tm-city-picker>
+        </template>
+        <!-- 特殊键盘 -->
+        <template v-if="item.type === 'keyboard'">
+          <view
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
+            class="flex flex-row flex-row-center-between"
+          >
+            <tm-text
+              :userInteractionEnabled="false"
+              :label="model[item.prop!]|| '请选择'"
+            ></tm-text>
+            <tm-icon
+              :userInteractionEnabled="false"
+              :font-size="24"
+              name="tmicon-angle-right"
+            ></tm-icon>
+          </view>
+          <tm-keyboard
+            decimal
+            v-bind="item.typeAttrs"
+            v-model="model[item.prop!]"
+            :default-value="model[item.prop!]"
+            v-model:show="showPicker[item.prop!]"
+          ></tm-keyboard>
         </template>
 
         <!-- 默认输入 -->

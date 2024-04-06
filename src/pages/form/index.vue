@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { FormOptions } from "@/components/dy-form/types/types";
 const formVal = ref({
-  username: "1212",
-  password: "122434",
+  username: "admim",
+  password: "123456",
   radio: 3,
-  checkbox: [],
+  checkbox: [1],
   switch: true,
 
   rate: 1,
@@ -11,9 +12,18 @@ const formVal = ref({
   segtab: "2",
   stepper: 20,
   pickerStr: "李子",
-  pickerIndex: [2],
+  pickerIndex: [3],
+
+  date: [],
+  dateStr: "",
+
+  time: "",
+  time2: "",
+  city: [],
+  cityStr: "",
+  keyboard: "",
 });
-const options = ref([
+const options = ref<FormOptions[]>([
   {
     type: "input",
     value: "",
@@ -21,7 +31,7 @@ const options = ref([
     prop: "username",
     placeholder: "请输入用户名",
     rules: [{ required: true, message: "不能为空" }],
-    labelAttrs: {
+    formItemAttrs: {
       desc: "表单项目用户名",
       required: true,
     },
@@ -44,7 +54,12 @@ const options = ref([
         trigger: "blur",
       },
     ],
+    typeAttrs: {
+      password: true,
+      // prefix: "tmicon-lock-fill",
+    },
   },
+
   {
     type: "radio-group",
     value: "",
@@ -158,9 +173,10 @@ const options = ref([
     label: "弹出选择",
     prop: "pickerStr",
     pickerIndex: "pickerIndex",
+    pickerShow: false,
     placeholder: "请选择",
     rules: [{ required: true, message: "请选择" }],
-    // labelAttrs: {
+    // formItemAttrs: {
     //   class:"flex flex-row flex-row-center-between"
     // },
     typeAttrs: {
@@ -182,6 +198,92 @@ const options = ref([
           id: 4,
         },
       ],
+      selectedModel: "id",
+    },
+  },
+  {
+    type: "date-picker",
+    value: "",
+
+    label: "日期选择",
+    prop: "date",
+    pickerIndex: "dateStr",
+    placeholder: "请选择",
+    pickerShow: false,
+    rules: [{ required: true, message: "请选择日期" }],
+    // formItemAttrs: {
+    //   class:"flex flex-row flex-row-center-between"
+    // },
+    typeAttrs: {
+      format: "YYYY年MM月DD日",
+      model: "quarter", ///  day week month quarter year rang
+      dateStyle: [
+        // 选中特定日期
+        // {
+        //   date: "2022-12-8", //日期
+        //   text: false, //浅色背景。
+        //   color: "red", //主题色.
+        //   extra: "测试", //额外的内容，在日期下方显示的文本。
+        // },
+        // {
+        //   date: "2022-12-24", //日期
+        //   text: false, //浅色背景。
+        //   color: "orange", //主题色.
+        //   extra: "签到", //额外的内容，在日期下方显示的文本。
+        // },
+      ],
+    },
+  },
+  {
+    type: "time-picker",
+    value: "",
+    label: "时间选择",
+    prop: "time",
+    pickerShow: false,
+    placeholder: "请选择",
+    rules: [{ required: true, message: "请选择时间" }],
+    typeAttrs: {
+      // format: "YYYY年MM月DD日",
+      showDetail: { year: false, month: false, day: false, hour: true },
+    },
+  },
+  {
+    type: "time-picker",
+    value: "",
+    label: "精确选择",
+    prop: "time2",
+    pickerShow: false,
+    placeholder: "请选择",
+    rules: [{ required: true, message: "请选择时间" }],
+    typeAttrs: {
+      // format: "YYYY年MM月DD日",
+      showDetail: { year: true, month: true, day: true, hour: true },
+    },
+  },
+  {
+    type: "city-picker",
+    value: "",
+    label: "地区选择",
+    prop: "cityStr",
+    pickerShow: false,
+    pickerIndex: "city",
+    placeholder: "请选择",
+    rules: [{ required: true, message: "请选择时间" }],
+    typeAttrs: {
+      // format: "YYYY年MM月DD日",
+      showDetail: { year: true, month: true, day: true, hour: true },
+    },
+  },
+  {
+    type: "keyboard",
+    value: "",
+    label: "特殊键盘",
+    prop: "keyboard",
+    pickerShow: false,
+    placeholder: "请输入",
+    rules: [{ required: true, message: "输入" }],
+    typeAttrs: {
+      type: "card", // password card car number
     },
   },
 ]);

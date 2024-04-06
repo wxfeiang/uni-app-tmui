@@ -5,11 +5,11 @@ export interface FormOptions {
   type : 'input'| 'textarea'| 'password'|
   'number'| 'inputnumber'|'radio-group' |
   'radio' | 'checkbox-group'| 'checkbox' |'rate' | 'slider' |
-  'segtab' | 'switch' | 'upload' | 'text' | 'icon' |'calendar' |
-   'city-picker' | 'time-picker' | 'picker' | 'editor' |'stepper' ,
+  'segtab' | 'switch' | 'upload' | 'text' | 'icon' |'calendar' | 'picker'|
+  'city-picker' | 'time-picker' | 'date-picker' | 'keyboard'| 'year-picker'  | 'color-picker' | 'ditor' |'stepper' ,
    // 表单项的值
    value?: any,
-   pickerIndex: string,
+   pickerIndex?: string,
    // 表单项label
    label?: string,
    // 表单项的标识
@@ -18,11 +18,15 @@ export interface FormOptions {
    rules?: any[],
    // 表单项的占位符
    placeholder?: string,
+    // 弹框框
+   pickerShow ?:boolean
+   // 表单项的子元素
    children?: any[],
    // 表单项其他
-   labelAttrs : any,
-
+   formItemAttrs ?: any,
     // 表单框项其他
-    typeAttrs : any,
+   typeAttrs ?: any,
+
+
 
 }
