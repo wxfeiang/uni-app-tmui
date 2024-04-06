@@ -4,8 +4,7 @@ name: Deploy-myserver
 on:
   push:
     branches:
-      - main
-
+      - H5
 # 任务
 jobs:
   my-server:
