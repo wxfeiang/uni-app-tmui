@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import { getBaseUrl, getEnvValue } from "@/utils/env";
 import cloneDeep from "lodash-es/cloneDeep";
 import { FormOptions } from "./types/types";
-
+const baseUrl = getEnvValue("VITE_IMG_URL");
 let props = defineProps({
   // 表单的配置项
   options: {
@@ -18,6 +19,10 @@ let props = defineProps({
   // 用户自定义上传方法
   httpRequest: {
     type: Function,
+  },
+  uploadUrl: {
+    type: String,
+    default: () => getEnvValue("VITE_BASE_URL") + getBaseUrl() + "/base/uploadLocal",
   },
 });
 let model = ref<any>(null);
@@ -62,10 +67,21 @@ let initForm = () => {
         // 转换出显示的内容
         m[item.prop!] = item.typeAttrs.columns.find((i: any) => i.id == cur)?.text ?? "";
       }
+      if (item.type === "upload") {
+        if (props.formVal[item.prop!] && props.formVal[item.prop!].length > 0) {
+          props.formVal[item.prop!] = props.formVal[item.prop!].map((i: any) => {
+            return {
+              url: baseUrl + i,
+            };
+          });
+          m[item.prop!] = props.formVal[item.prop!];
+        }
+      }
     });
 
     // model.value = cloneDeep(props.formVal as object);
     model.value = cloneDeep(m);
+
     rules.value = cloneDeep(r);
     showPicker.value = cloneDeep(s);
   }
@@ -83,12 +99,21 @@ watch(
 );
 
 const confirm = (e: any) => {
-  console.log(model.value, e);
+  console.log(model.value);
+};
+const reset = (e: any) => {
+  initForm();
 };
 </script>
 
 <template>
-  <tm-form v-model="model" :label-width="190" v-if="model!" @submit="confirm">
+  <tm-form
+    v-model="model"
+    :label-width="190"
+    v-if="model!"
+    @submit="confirm"
+    @reset="reset"
+  >
     <template v-for="(item, index) in options" :key="index">
       <tm-form-item
         :label="item.label"
@@ -174,31 +199,7 @@ const confirm = (e: any) => {
             v-model="model[item.pickerIndex!]"
           ></tm-picker>
         </template>
-        <!-- 日期选择 -->
-        <template v-if="item.type === 'date-picker'">
-          <view
-            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
-            class="flex flex-row flex-row-center-between"
-          >
-            <tm-text
-              :userInteractionEnabled="false"
-              :label="model[item.pickerIndex!]|| '请选择'"
-            ></tm-text>
-            <tm-icon
-              :userInteractionEnabled="false"
-              :font-size="24"
-              name="tmicon-angle-right"
-            ></tm-icon>
-          </view>
 
-          <tm-calendar
-            v-model="model[item.prop!]"
-            v-model:show="showPicker[item.prop!]"
-            v-model:model-str="model[item.pickerIndex!]"
-            :default-value="model[item.prop!]"
-            v-bind="item.typeAttrs"
-          ></tm-calendar>
-        </template>
         <!-- 时间选择 -->
         <template v-if="item.type === 'time-picker'">
           <view
@@ -252,13 +253,14 @@ const confirm = (e: any) => {
         </template>
         <template v-if="item.type === 'city-picker'">
           <!-- 地区选择-->
+
           <view
             @click="showPicker[item.prop!] = !showPicker[item.prop!]"
             class="flex flex-row flex-row-center-between"
           >
             <tm-text
               :userInteractionEnabled="false"
-              :label="model[item.prop!]|| '请选择'"
+              :label="model[item.pickerIndex!]|| '请选择'"
             ></tm-text>
             <tm-icon
               :userInteractionEnabled="false"
@@ -267,13 +269,37 @@ const confirm = (e: any) => {
             ></tm-icon>
           </view>
           <tm-city-picker
-            v-model="model[item.pickerIndex!]"
-            v-model:model-str="model[item.prop!]"
+            v-model="model[item.prop!]"
+            v-model:model-str="model[item.pickerIndex!]"
             v-model:show="showPicker[item.prop!]"
-            :default-value="model[item.pickerIndex!]"
+            :default-value="model[item.prop!]"
             v-bind="item.typeAttrs"
           >
           </tm-city-picker>
+        </template>
+        <!-- 日期选择 -->
+        <template v-if="item.type === 'date-picker'">
+          <view
+            @click="showPicker[item.prop!] = !showPicker[item.prop!]"
+            class="flex flex-row flex-row-center-between"
+          >
+            <tm-text
+              :userInteractionEnabled="false"
+              :label="model[item.pickerIndex!]|| '请选择'"
+            ></tm-text>
+            <tm-icon
+              :userInteractionEnabled="false"
+              :font-size="24"
+              name="tmicon-angle-right"
+            ></tm-icon>
+          </view>
+          <tm-calendar
+            v-model="model[item.prop!]"
+            v-model:model-str="model[item.pickerIndex!]"
+            v-model:show="showPicker[item.prop!]"
+            :default-value="model[item.prop!]"
+            v-bind="item.typeAttrs"
+          ></tm-calendar>
         </template>
 
         <!-- 特殊键盘 -->
@@ -300,6 +326,14 @@ const confirm = (e: any) => {
             v-model:show="showPicker[item.prop!]"
           ></tm-keyboard>
         </template>
+        <template v-if="item.type === 'upload'">
+          <tm-upload
+            :default-value="model[item.prop!]"
+            v-model="model[item.prop!]"
+            v-bind="item.typeAttrs"
+            :url="uploadUrl"
+          ></tm-upload>
+        </template>
 
         <!-- 默认输入 -->
         <tm-input
@@ -314,6 +348,7 @@ const confirm = (e: any) => {
         </tm-input>
       </tm-form-item>
     </template>
+
     <tm-form-item :border="false">
       <view class="flex flex-row">
         <view class="flex-1 mr-32">
