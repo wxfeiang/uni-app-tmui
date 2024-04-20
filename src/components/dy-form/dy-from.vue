@@ -67,6 +67,7 @@ let initForm = () => {
         // 转换出显示的内容
         m[item.prop!] = item.typeAttrs.columns.find((i: any) => i.id == cur)?.text ?? "";
       }
+      // 图片上传
       if (item.type === "upload") {
         if (props.formVal[item.prop!] && props.formVal[item.prop!].length > 0) {
           props.formVal[item.prop!] = props.formVal[item.prop!].map((i: any) => {
@@ -78,10 +79,7 @@ let initForm = () => {
         }
       }
     });
-
-    // model.value = cloneDeep(props.formVal as object);
     model.value = cloneDeep(m);
-
     rules.value = cloneDeep(r);
     showPicker.value = cloneDeep(s);
   }
@@ -97,13 +95,16 @@ watch(
   },
   { deep: true }
 );
-
+// 提交
 const confirm = (e: any) => {
   console.log(model.value);
 };
+// 重置
 const reset = (e: any) => {
   initForm();
 };
+
+// 确定图片上传地址
 </script>
 
 <template>
