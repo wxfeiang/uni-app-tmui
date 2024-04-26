@@ -5,10 +5,12 @@ const store = useSystemStore();
 
 // 加密
 export function encrypt(txt: string) {
+  console.log('🍻[txt]:', txt);
   let setPrivateKey = '';
   if (store.dot) {
     setPrivateKey = store.dot;
   }
+  console.log('🍧[setPrivateKey]:', setPrivateKey);
   const encryptor = new JSEncrypt();
 
   encryptor.setPublicKey(setPrivateKey); // 设置公钥

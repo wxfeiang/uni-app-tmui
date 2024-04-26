@@ -51,7 +51,10 @@ const Login = async (form: any) => {
     newData.value = {
       appKey: 'default',
       na: loginFrom.value.na,
-      ps: encodeURI(encrypt(loginFrom.value.ps) as string),
+      ps: encodeURI(encrypt(loginFrom.value.ps.trim())).replace(
+        /\+/g,
+        "%2B"
+      ),
       co: loginFrom.value.co,
       u: codeflog.value,
       type: 1,
