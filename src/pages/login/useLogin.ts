@@ -17,15 +17,15 @@ const rules = {
     required: true,
     message: '密码不能为空',
   },
-  code:{
+  verifyCode: {
     required: true,
     message: '验证码不能为空',
-  }
+  },
 };
 const loginFrom = ref(<LoginParams>{
   username: 'admin',
   password: '123456',
-  code: ''
+  verifyCode: '',
 });
 
 const { send: sendLogin2 } = login2(loginFrom.value, {
@@ -35,7 +35,6 @@ const { send: sendLogin2 } = login2(loginFrom.value, {
 
 const Login = async (form: any) => {
   if (form.validate) {
-
     const { token }: any = await sendLogin2();
     authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
@@ -48,8 +47,6 @@ const { send: getcode, data: codeimg } = captchaImage({
   immediate: true, // 默认不发出请求
   initialData: {},
 });
-
-
 
 const { send: tesToken, data: authInfo } = testToken({
   immediate: false, // 默认不发出请求
@@ -68,5 +65,14 @@ tesFile((e: any) => {
 });
 
 export default () => {
-  return { Login, tesToken, loginFrom, rules, authInfo, download,codeimg,getcode };
+  return {
+    Login,
+    tesToken,
+    loginFrom,
+    rules,
+    authInfo,
+    download,
+    codeimg,
+    getcode,
+  };
 };

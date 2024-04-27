@@ -37,8 +37,8 @@ function goto() {
         >
         </tm-input>
       </tm-form-item>
-      <tm-form-item field="code" :rules="rules.code">
-        <tm-input placeholder="验证码" v-model="loginFrom.code">
+      <tm-form-item field="verifyCode" :rules="rules.verifyCode">
+        <tm-input placeholder="验证码" v-model="loginFrom.verifyCode">
           <template #right>
             <!-- <tm-image
               :width="200"
@@ -46,7 +46,7 @@ function goto() {
               :src="codeImg"
               @click="getcode"
             ></tm-image> -->
-            <view v-html="codeimg" @click="getcode" class="w-200 h-50"></view>
+            <view v-html="codeimg?.data" @click="getcode" class="w-200 h-50"></view>
           </template>
         </tm-input>
       </tm-form-item>

@@ -1,7 +1,7 @@
 declare interface LoginParams {
   username: string;
   password: string;
-  code?: string;
+  verifyCode?: string;
 }
 declare interface LoginModel {
   token: string;
