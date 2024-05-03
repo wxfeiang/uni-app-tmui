@@ -1,8 +1,6 @@
 import { useSystemStore } from '@/store/modules/system';
 import JSEncrypt from 'jsencrypt';
 
-
-
 // 加密
 export function encrypt(txt: string) {
   const store = useSystemStore();
@@ -25,4 +23,13 @@ export function decrypt(txt: string) {
   const encryptor = new JSEncrypt();
   encryptor.setPrivateKey(publicKey);
   return encryptor.decrypt(txt);
+}
+
+// 密码转换
+export function changePassword(password: string) {
+  return encodeURI(encrypt(password.trim()) as string).replace(
+    /\+/g,
+    "%2B"
+  )
+
 }

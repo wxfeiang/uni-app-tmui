@@ -3,7 +3,7 @@ import { Constant } from '@/enum/constant';
 import { router } from '@/router'; // js文件使用方法
 import { login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
-import { encrypt } from '@/utils/aes/jsencrypt';
+import { changePassword } from '@/utils/aes/jsencrypt';
 const { getCodeUrl, codeflog } = useImageVerify();
 const authStore = useAuthStore();
 //
@@ -53,7 +53,7 @@ const Login = async (form: any) => {
     newData.value = {
       appKey: Constant.APP_KEY,
       na: loginFrom.value.na,
-      ps: encodeURI(encrypt(loginFrom.value.ps) as string),
+      ps: changePassword(loginFrom.value.ps),
       co: loginFrom.value.co,
       u: codeflog.value,
       type: 1,
