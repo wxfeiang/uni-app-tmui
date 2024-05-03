@@ -6,4 +6,9 @@ export enum Constant {
   TOKEN_TIMEOUT_VALUE = 2 * 1000 * 3600,
   // 国际化
   LANF = 'language',
+  // appkey
+  APP_KEY = 'appKey',  // default
+
+  // terminal
+  TERMINAL = 'terminal',
 }

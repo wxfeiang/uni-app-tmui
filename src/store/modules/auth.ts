@@ -1,7 +1,7 @@
 import { TOKEN_KEY } from '@/enums/cacheEnum';
 import { logout } from '@/services/api/auth';
 import { getCache, removeCache, setCache } from '@/utils/cache';
-import { defineStore } from 'pinia';
+
 
 interface AuthState {
   token?: string;

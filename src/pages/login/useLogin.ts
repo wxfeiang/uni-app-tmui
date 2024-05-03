@@ -1,8 +1,10 @@
+import useImageVerify from '@/components/ReImageVerify/useImageVerify';
+import { Constant } from '@/enum/constant';
 import { router } from '@/router'; // js文件使用方法
 import { login2, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
-import { encrypt } from '@/utils/jsencrypt';
-const { getCodeUrl, codeflog } = useSystem();
+import { encrypt } from '@/utils/aes/jsencrypt';
+const { getCodeUrl, codeflog } = useImageVerify();
 const authStore = useAuthStore();
 //
 import { useRequest } from 'alova';
@@ -49,13 +51,13 @@ const { send: sendLogin2 } = login2(
 const Login = async (form: any) => {
   if (form.validate) {
     newData.value = {
-      appKey: 'default',
+      appKey: Constant.APP_KEY,
       na: loginFrom.value.na,
       ps: encodeURI(encrypt(loginFrom.value.ps) as string),
       co: loginFrom.value.co,
       u: codeflog.value,
       type: 1,
-      terminal: 'WEAPP',
+      terminal: Constant.TERMINAL,
     };
 
 

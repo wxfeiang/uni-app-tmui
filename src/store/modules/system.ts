@@ -10,14 +10,14 @@ interface STSCONFIG {
   type: string;
 }
 
-export const useSystemStore = defineStore('systemStore', () => {
-  const appKey = ref('app');
-  const appSecret = ref('');
+export const useSystemStore = defineStore("systemStore", () => {
 
-  const resstrppd = ref(''); // 解密
+  const appSecret = ref("");
+
+  const resstrppd = ref(""); // 解密
   const filterData = ref(<STSCONFIG>{});
-  const userDId = ref('');
-  const dot = ref('');
+  const userDId = ref("");
+  const dot = ref("");
 
   function RESSTRPPD(value: string) {
     resstrppd.value = value;
@@ -30,15 +30,21 @@ export const useSystemStore = defineStore('systemStore', () => {
     dot.value = value;
   }
 
+  function initSystemInfo() {
+    if (!resstrppd.value || !filterData.value || !dot.value) {
+      useSystem(true)
+    }
+  }
   return {
     RESSTRPPD,
     fILTERDATA,
     DOT,
-    appKey,
+
     appSecret,
     resstrppd,
     filterData,
     userDId,
     dot,
+    initSystemInfo,
   };
 });

@@ -1,9 +1,8 @@
-import { useSystemStore } from '@/store/modules/system';
 import CryptoJS from 'crypto-js';
 const secretStr = 'c1e73438-9892-4f31-a334-1e83b147a760';
 var key = CryptoJS.enc.Utf8.parse(secretStr.slice(0, 16));
 var iv = CryptoJS.enc.Utf8.parse(secretStr.slice(0, 16));
-const store = useSystemStore();
+
 //解密方法
 export function Decrypt(word: any, aesRes: any, aesResiv: any) {
   if (aesRes) {

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const { Login, tesToken, loginFrom, rules } = useLogin();
-const { captchaConfigData, codeImg, getCodeUrl, getSpecialList, listINfo } = useSystem();
+
+// const { codeImg, getCodeUrl, getSpecialList, listINfo } = useSystem();
 const router = useRouter();
 const form = ref(null);
 function goto() {
@@ -32,17 +33,11 @@ function goto() {
       <tm-form-item field="co" :rules="rules.co">
         <tm-input placeholder="验证码" v-model="loginFrom.co">
           <template #right>
-            <tm-image
-              :width="200"
-              :height="50"
-              :src="codeImg"
-              @click="getCodeUrl"
-            ></tm-image>
+            <ReImageVerify />
           </template>
         </tm-input>
       </tm-form-item>
       <tm-button form-type="submit" label="登录" block color="green"></tm-button>
     </tm-form>
   </tm-sheet>
-  <view class="fontFily" @click="getSpecialList"> 测试请求数据列表{{ listINfo }} </view>
 </template>

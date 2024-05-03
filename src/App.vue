@@ -1,5 +1,12 @@
 <template></template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useSystemStore } from "@/store/modules/system";
+import { onMounted } from "vue";
+const systemStore = useSystemStore();
+onMounted(() => {
+  systemStore.initSystemInfo();
+});
+</script>
 <style>
 /* #ifdef APP-PLUS-NVUE */
 @import "./tmui/scss/nvue.css";

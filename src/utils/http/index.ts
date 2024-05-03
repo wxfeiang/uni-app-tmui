@@ -5,12 +5,12 @@ import { createAlova } from 'alova';
 import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
 import { API } from '@/services/model/baseModel';
 import { useAuthStore } from '@/store/authStore';
-import { beforeQuest, responseAes } from '@/utils/encryptUtils';
+import { beforeQuest, responseAes } from '@/utils/aes/encryptUtils';
 import { checkStatus } from '@/utils/http/checkStatus';
 import { Toast } from '@/utils/uniapi/prompt';
 import { assign } from 'lodash-es';
 const BASE_URL = getBaseUrl();
-const authStore = useAuthStore();
+
 const HEADER = {
   'Content-Type': ContentTypeEnum.JSON,
   Accept: 'application/json, text/plain, */*',
@@ -32,6 +32,7 @@ const alovaInstance = createAlova({
   // 请求拦截器
 
   beforeRequest: (method) => {
+    const authStore = useAuthStore();
     beforeQuest(method);
     method.config.headers = assign(
       method.config.headers,

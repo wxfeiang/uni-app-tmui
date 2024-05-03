@@ -2,7 +2,7 @@ import { useSystemStore } from '@/store/modules/system';
 import CryptoJS from 'crypto-js';
 import JSEncrypt from 'jsencrypt';
 import { sm2, sm4 } from 'sm-crypto';
-const store = useSystemStore();
+
 
 let API_ENCRYPT_KEY: string =
   'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp5t8glnlZKID+pMuDrOSdHB5ADX3sh9EeSaEk0LdydPKR/+xSp63xlIx1FJRaTdljWDaLx3NTVJn5cyEOV3kXU/2diDVPBUOrfljJGFC1FaZh70tO8KWJNQZErImIHYTeDie5yV9Kk55ZYH6p6zjTWZHZ3+tYKWyLef107twkxQhDSDM6mjKfpT6UCvewLrRLa4CM2HR+bvbizNlVWAtYajhtkmDZdQPNHw92ujqltf5GOBVY98KN+VKfRhor7XZeKaXX23KLAyGzpY+PkhHm5ksG3dDXQdtHjQJ+VZD/EcPBMICTwhfgZsLtwgWbqgEat5j9AHHRyDKmUZkmY+DzQIDAQAB';
@@ -24,6 +24,7 @@ let AES_KEY: any = ''; //
 export function createFilter<T>(method: T) {
   const utils = {
     getConf: async () => {
+      const store = useSystemStore();
       if (store.filterData && store.filterData.headerKey) {
         const data = store.filterData;
 

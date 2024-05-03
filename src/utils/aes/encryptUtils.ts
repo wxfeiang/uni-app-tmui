@@ -1,16 +1,18 @@
-import { useSystemStore } from '@/store/modules/system';
-import { Decrypt, Encrypt } from '@/utils/aesMgr';
-import { decrypt } from '@/utils/jsencrypt';
-import { uuid } from '@/utils/uuid';
+import { Constant } from '@/enum/constant';
+
+import { Decrypt, Encrypt } from '@/utils/aes/aesMgr';
+import { decrypt } from '@/utils/aes/jsencrypt';
 import { Base64 } from 'js-base64'; // 引入
 import { md5 } from 'js-md5';
+import { v4 as uuidv4 } from 'uuid';
 import { createFilter } from './filter';
-const store = useSystemStore();
+
+
+
 const httpParam = {
-  appKey: store.appKey,
+  appKey: Constant.APP_KEY,
   appSecret: '',
 };
-
 // 生成时间
 export function getTimeStamp() {
   let date = Date.parse(new Date() as any);
@@ -68,9 +70,9 @@ export function beforeQuest(method: any) {
 
   // 数据合并转换
   let initParams = {
-    appKey: httpParam.appKey,
+    appKey: Constant.APP_KEY,
     timestamp: getTimeStamp(),
-    replay: uuid(),
+    replay: uuidv4(),
   };
 
   if (method.type === 'GET') {
