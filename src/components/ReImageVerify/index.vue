@@ -9,11 +9,11 @@ const { getCodeUrl, codeImg } = useImageVerify();
 let props = defineProps({
   width: {
     type: Number || String,
-    default: 100,
+    default: 200,
   },
   height: {
     type: Number || String,
-    default: 500,
+    default: 50,
   },
 });
 </script>
