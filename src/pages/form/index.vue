@@ -11,19 +11,15 @@ const formVal = ref({
   slider: 40,
   segtab: "2",
   stepper: 20,
-
   pickerArr: [], // 弹出选中的 和绑定的字段不一样
-
+  date: ["2024/12/13"],
+  dateStr: "",
   time: "",
   time2: "",
   time3: [],
   time3Str: [],
-
-  dateStr: "",
-  dateArry: [],
-
   city: [],
-
+  cityStr: "",
   keyboard: "",
   upload: [
     "public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png",
@@ -208,7 +204,22 @@ const options = ref<FormOptions[]>([
       selectedModel: "id",
     },
   },
-
+  {
+    type: "date-picker",
+    value: "",
+    label: "日历选择",
+    prop: "dateStr",
+    pickerIndex: "date",
+    placeholder: "请选择",
+    pickerShow: false,
+    rules: [{ required: true, message: "请选择日期" }],
+    typeAttrs: {
+      // format: "YYYY年MM月DD日",
+      model: "day", ///  day week month quarter year rang
+      //start: "2024-01-01",
+      // end: "2024-12-31",
+    },
+  },
   {
     type: "time-picker",
 

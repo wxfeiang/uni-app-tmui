@@ -24,8 +24,8 @@ const rules = {
 };
 const loginFrom = ref(<LoginParams>{
   username: 'admin',
-  password: '123456',
-  verifyCode: '',
+  password: '123456admin',
+  verifyCode: ''
 });
 
 const { send: sendLogin2 } = login2(loginFrom.value, {
@@ -44,7 +44,7 @@ const Login = async (form: any) => {
 };
 
 const { send: getcode, data: codeimg } = captchaImage({
-  immediate: true, // 默认不发出请求
+  immediate: true,
   initialData: {},
 });
 
@@ -65,14 +65,5 @@ tesFile((e: any) => {
 });
 
 export default () => {
-  return {
-    Login,
-    tesToken,
-    loginFrom,
-    rules,
-    authInfo,
-    download,
-    codeimg,
-    getcode,
-  };
+  return { Login, tesToken, loginFrom, rules, authInfo, download, codeimg, getcode };
 };
