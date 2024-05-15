@@ -1,6 +1,7 @@
 // "off" or 0 - 关闭这个规则校验
 // "warn" or 1 - 开启这个规则校验，但只是提醒，不会退出
 // "error" or 2 - 开启这个规则校验，并退出
+// "always" - 开启这个规则校验，并退出
 
 module.exports = {
   root: true,
