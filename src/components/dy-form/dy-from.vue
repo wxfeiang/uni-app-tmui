@@ -447,7 +447,6 @@ defineExpose({
         </template>
       </tm-form-item>
     </template>
-
     <tm-form-item :border="false">
       <view class="flex flex-row gap-10" v-if="formPros!.formBtns!.length>0">
         <view class="flex-1" v-for="(item ,index) in formPros!.formBtns" :key="index">

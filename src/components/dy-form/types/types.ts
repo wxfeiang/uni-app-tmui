@@ -68,7 +68,7 @@ export interface FormProps {
   // 表单底部插槽
   formBottomSlot?: any,
   // 表单底部插槽名
-  formBottomSlotName: string
+  formBottomSlotName?: string
   // 表单底部插槽数据
   formBottomSlotData?: any,
   // 禁用所有表单项目
