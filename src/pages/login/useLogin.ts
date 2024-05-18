@@ -100,9 +100,9 @@ const { send: sendLogin } = login(
 );
 const Login = async (form: any) => {
   // 转化响应式对象
-  toRef(form.data)
+  toRef(form)
   try {
-    const { token }: any = await sendLogin(form.data);
+    const { token }: any = await sendLogin(form);
     authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
   } catch (error) {
