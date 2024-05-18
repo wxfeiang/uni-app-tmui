@@ -155,7 +155,10 @@ const handReadme = (item: FormOptions) => {
 };
 // 提交
 const confirm = (e: any) => {
-  emit("submit", model.value);
+  if (e.validate) {
+    // 校验通过 抛出表单项目
+    emit("submit", model.value);
+  }
 };
 // 确定图片上传地址
 const resultUrl = (urls: string[]) => {
@@ -427,12 +430,20 @@ defineExpose({
             v-bind="item.typeAttrs"
           >
             <template #right v-if="item.typeAttrs.codeImg!">
-              <tm-image
-                :width="200"
-                :height="50"
-                v-bind="item.typeAttrs.codeImgAttrs"
-                @click="item.typeAttrs.codeImgAttrs?.callback()"
-              ></tm-image>
+              <template v-if="item.typeAttrs.codeImgAttrs!.src">
+                <tm-image
+                  :width="200"
+                  :height="50"
+                  v-bind="item.typeAttrs.codeImgAttrs"
+                  @click="item.typeAttrs.codeImgAttrs?.callback()"
+                ></tm-image>
+              </template>
+              <template v-else>
+                <view
+                  v-html="item.typeAttrs.codeImgAttrs?.htmlcallback()"
+                  @click="item.typeAttrs.codeImgAttrs?.callback()"
+                ></view>
+              </template>
             </template>
             <template #right v-if="item.typeAttrs.right">
               <slot
