@@ -1,10 +1,5 @@
 <script lang="ts" setup>
-const { Login, tesToken, loginFrom, options, formPros, getcode } = useLogin();
-const router = useRouter();
-const form = ref(null);
-function goto() {
-  router.push({ name: "Home" });
-}
+const { Login, loginFrom, options, formPros } = useLogin();
 </script>
 
 <template>

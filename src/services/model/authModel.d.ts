@@ -6,3 +6,9 @@ declare interface LoginParams {
 declare interface LoginModel {
   token: string;
 }
+
+declare interface resData {
+
+  code?: number | string;
+  data?: any
+}

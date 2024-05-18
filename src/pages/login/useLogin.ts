@@ -1,6 +1,6 @@
 import { FormOptions, FormProps } from "@/components/dy-form/types/types";
-import router from '@/router'; // js文件使用方法
-import { captchaImage, downFile, login2, testToken } from '@/services/api/auth';
+import router from "@/router";
+import { captchaImage, downFile, login, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
 const authStore = useAuthStore();
@@ -55,11 +55,12 @@ const options = ref<FormOptions[]>([
       transprent: false,
       codeImg: true,
       codeImgAttrs: {
-        src:
-          "",
-        callback: (e: any) => {
-          getcode()
+        htmlcallback: (e: any) => {
+          return codeimg.value.data;
         },
+        callback: () => {
+          getcode();
+        }
       },
     },
   },
@@ -83,30 +84,33 @@ const formPros = ref<FormProps>({
   formBtns: [
     {
       formType: "submit",
-      label: "登录",
+      label: "登 录",
       formBtnAttrs: {
         // disabled: false,
       }
     }
   ]
 });
-
-const { send: sendLogin2 } = login2(loginFrom.value, {
-  immediate: false,
-  loading: false,
-});
-
+const { send: sendLogin } = login(
+  {},
+  {
+    immediate: false,
+    loading: false,
+  },
+);
 const Login = async (form: any) => {
-  if (form.validate) {
-    const { token }: any = await sendLogin2();
+  // 转化响应式对象
+  toRef(form.data)
+  try {
+    const { token }: any = await sendLogin(form.data);
     authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
-  } else {
-    return;
+  } catch (error) {
+    getcode()
   }
 };
 
-const { send: getcode, data: codeimg } = captchaImage({
+const { send: getcode, data: codeimg }: { send: any; data: any } = captchaImage({
   immediate: true,
   initialData: {},
 });

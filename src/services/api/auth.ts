@@ -10,12 +10,16 @@ const CODEIMG = '/base/captchaImage';
  * 登录
  * @param params
  */
-export function login(params: LoginParams) {
-  return request.Post(LOGIN, params);
+
+export function login(params: any, config: any) {
+
+  return useRequest(newTodo => request.Post(LOGIN, newTodo), { ...config });
 }
-export function login2(params: LoginParams, config: any) {
-  return useRequest(request.Post(LOGIN, params), { ...config });
-}
+
+
+
+
+
 export function captchaImage(config: any) {
   return useRequest(request.Post(CODEIMG), { ...config });
 }
