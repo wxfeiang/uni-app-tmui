@@ -200,10 +200,14 @@ defineExpose({
           </tm-checkbox-group>
         </template>
         <template v-if="item.type === 'readme'">
-          <tm-checkbox :round="10" v-model="model[item.prop!]">
+          <tm-checkbox
+            :round="10"
+            v-model="model[item.prop!]"
+            v-bind="item.formGroupItemAttrs"
+          >
             <template v-slot:default="{ checked }">
               <view class="flex flex-row">
-                <tm-text label="我已经阅读并同意"></tm-text>
+                <tm-text v-bind="item.formTextAttrs"></tm-text>
                 <view>
                   <tm-text
                     v-bind="item.typeAttrs"
@@ -440,8 +444,8 @@ defineExpose({
               </template>
               <template v-else>
                 <view
-                  v-html="item.typeAttrs.codeImgAttrs?.htmlcallback()"
-                  @click="item.typeAttrs.codeImgAttrs?.callback()"
+                  v-html="item.typeAttrs.codeImgAttrs!.htmlcallback && item.typeAttrs.codeImgAttrs!.htmlcallback()"
+                  @click="item.typeAttrs.codeImgAttrs!.callback() "
                 ></view>
               </template>
             </template>
