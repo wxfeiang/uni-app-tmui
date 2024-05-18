@@ -14,5 +14,4 @@ export function setupRouter(app: App<Element>) {
 
   app.use(router);
 }
-
 export default router;

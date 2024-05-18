@@ -1,8 +1,7 @@
 declare interface LoginParams {
-  phone: string;
-  password: string;
-  code?: number | string;
-  verifyCode?: string;
+  na: number;
+  ps: string;
+  co?: string;
 }
 declare interface LoginModel {
   token: string;

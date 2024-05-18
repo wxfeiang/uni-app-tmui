@@ -100,7 +100,6 @@
         "unplugin-vue-components": "0.24.1",
         "uuid": "^7.0.3",
         "vite": "4.3.5",
-        "vite-plugin-remove-console": "^2.2.0",
         "vite-plugin-remove-console": "^2.2.0"
     },
     "config": {

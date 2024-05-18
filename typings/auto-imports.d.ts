@@ -93,6 +93,7 @@ declare global {
   const useRoute: typeof import('uni-mini-router')['useRoute']
   const useRouter: typeof import('uni-mini-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
+  const useSource: typeof import('../src/subPages/subUser/source/useSource')['default']
   const useSystem: typeof import('../src/composables/useSystem')['default']
   const useUser: typeof import('../src/pages/user/useUser')['default']
   const watch: typeof import('vue')['watch']
