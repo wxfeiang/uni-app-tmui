@@ -40,6 +40,7 @@
     },
     "dependencies": {
         "@alova/adapter-uniapp": "^1.2.2",
+        "@commitlint/config-conventional": "^19.2.2",
         "@dcloudio/uni-app": "3.0.0-4000720240327002",
         "@dcloudio/uni-app-plus": "3.0.0-4000720240327002",
         "@dcloudio/uni-components": "3.0.0-4000720240327002",
