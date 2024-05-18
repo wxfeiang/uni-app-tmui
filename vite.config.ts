@@ -34,7 +34,7 @@ export default ({ command, mode }: ConfigEnv) => {
             imports: ['createRouter', 'useRouter', 'useRoute'],
           },
         ],
-        dirs: ['src/composables/**/*', 'src/pages/**/*'],
+        dirs: ['src/composables/**/*', 'src/pages/**/*', 'src/subPages/**/*'],
         dts: 'typings/auto-imports.d.ts',
         // 解决eslint报错问题
         eslintrc: {
@@ -79,6 +79,12 @@ export default ({ command, mode }: ConfigEnv) => {
         [env.VITE_BASE_API]: {
           target: env.VITE_BASE_URL,
           changeOrigin: true,
+          bypass(req, res, options: any) {
+            const proxyURL = options.target + options.rewrite(req.url);
+            console.log('proxyURL', proxyURL);
+            req.headers['x-req-proxyURL'] = proxyURL; // 设置未生效
+            res.setHeader('x-req-proxyURL', proxyURL); // 设置响应头可以看到
+          },
           rewrite: (path) =>
             path.replace(
               new RegExp(`^${env.VITE_BASE_API}`),
@@ -86,6 +92,7 @@ export default ({ command, mode }: ConfigEnv) => {
             ),
         },
       },
+
     },
   };
   return result;

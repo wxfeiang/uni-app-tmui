@@ -39,6 +39,7 @@ const alovaInstance = createAlova({
       HEADER,
       authStore.getAuthorization(),
     );
+    console.log('🍌[method]:', method);
   },
   responsed: {
     /**

@@ -143,10 +143,10 @@
         "uniStatistics": {
             "enable": false
         },
-        "title": "tmui3.0",
+        "title": "tmui3. 模板",
         "router": {
             "mode": "hash",
-            "base": "/h5/"
+            "base": "./"
         },
         "optimization": {
             "treeShaking": {

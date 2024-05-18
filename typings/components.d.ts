@@ -5,16 +5,12 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export {}
+export { }
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     DyDown: typeof import('./../src/components/dy-down/dy-down.vue')['default']
-    Hooks: typeof import('./../src/components/ReImageVerify/src/hooks.ts')['default']
-    ReImageVerify: typeof import('./../src/components/ReImageVerify/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Src: typeof import('./../src/components/ReImageVerify/src/index.vue')['default']
-    UseImageVerify: typeof import('./../src/components/ReImageVerify/useImageVerify.ts')['default']
   }
 }

@@ -14,23 +14,31 @@
 			}
 		},
 		{
+			"path": "pages/form/index",
+			"name":"Form",
+			"style": {
+
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"name":"Index",
-			"meta": {
-				"ignoreAuth": true
-			},
+			// "meta": {
+			// 	"ignoreAuth": true
+			// },
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"navigationBarLeftButtonText": "",
+
 			}
-		}
-		// },
-		// {
-		// 	"path": "pages/user/index",
-		// 	"name":"user",
-		// 	"style": {
-		// 		"navigationBarTitleText": "我的"
-		// 	}
-		// },
+		},
+		{
+			"path": "pages/user/index",
+			"name":"user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
 		// {
 		// 	"path": "pages/test/index",
 		// 	"name":"test",
@@ -45,16 +53,42 @@
 			"pages": [
 				{
 					"path": "about/index",
+					"name":"About",
 					"style": {
 						"navigationBarTitleText": "关于我的"
 					}
 				},
 				{
 					"path": "vip/index",
+					"name":"Vip",
 					"style": {
 						"navigationBarTitleText": "vip"
 					}
+				},
+				{
+					"path": "source/index",
+					"style": {
+						"navigationBarTitleText": "资源库"
+					}
+				},
+				{
+					"path": "source/list",
+					"name": "sourceList",
+					"style": {
+						"navigationStyle":"custom",
+						"navigationBarTitleText": "资源列表"
+					}
+				},
+				{
+					"path": "source/desc",
+					"name": "sourceDesc",
+					"style": {
+						"navigationStyle":"custom",
+						"navigationBarTitleText": "资源详情"
+					}
 				}
+
+
 			]
 		}
 	],

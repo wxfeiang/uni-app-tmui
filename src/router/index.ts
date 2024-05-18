@@ -11,7 +11,8 @@ const router = createRouter({
 export function setupRouter(app: App<Element>) {
   // Configure router guard
   createRouterGuard(router);
+
   app.use(router);
 }
 
-export { router };
+export default router;

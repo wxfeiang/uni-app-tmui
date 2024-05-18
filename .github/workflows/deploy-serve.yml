@@ -1,0 +1,79 @@
+name: Deploy-myserver
+
+# 触发条件：在 push 到 main/master 分支后，新的 Github 项目 应该都是 main，而之前的项目一般都是 master
+on:
+  push:
+    branches:
+      - h5
+# 任务
+jobs:
+  my-server:
+    # 服务器环境：最新版 Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.store-hit != 'true'
+        run: pnpm install --no-frozen-lockfile
+      # 生成静态文件
+      - name: Build
+        run: pnpm build:h5
+
+
+      - name: Deploy-myserver
+        # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
+        uses: cross-the-world/scp-pipeline@master
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
+        with:
+          host: ${{ secrets.USER_HOST }}
+          user: ${{ secrets.USER_NAME }}
+          pass: ${{ secrets.USER_PASS }}
+          connect_timeout: 10s
+          local: 'dist/build/h5/*'
+          remote: /home/www/uni-tmui/    # 成的静态文件存放的地方
+
+
+
+#  - name: Deploy
+#         # 这个是第三方提供的库，可以推送打包后的内容到指定分支
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           # 这边需要设置第二步获取到的deploy key，否则会提示没有权限推送代码
+#           deploy_key: ${{ secrets.VUE3STUDY }}
+#           # 推送到该仓库中，地址格式为github名称/仓库名
+#           external_repository: xxx/xxx
+#           # 推送的分支
+#           publish_branch: gh-pages
+#           # 推送的内容
+#           publish_dir: docs/.vuepress/dist
+
+
+
