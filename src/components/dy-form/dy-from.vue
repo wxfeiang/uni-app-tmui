@@ -144,7 +144,15 @@ const handPicker = (item: FormOptions) => {
     showPicker.value[item.prop!] = !showPicker.value[item.prop!];
   }
 };
-
+// handReadme
+const handReadme = (item: FormOptions) => {
+  if (item.typeAttrs?.callback) {
+    item.typeAttrs.callback(item);
+  } else {
+    // 走默认的跳转页面
+    console.log("🍕走默认的跳转页面 ");
+  }
+};
 // 提交
 const confirm = (e: any) => {
   emit("submit", model.value);
@@ -187,6 +195,21 @@ defineExpose({
               <tm-checkbox :label="r.text" :value="r.id"></tm-checkbox>
             </template>
           </tm-checkbox-group>
+        </template>
+        <template v-if="item.type === 'readme'">
+          <tm-checkbox :round="10" v-model="model[item.prop!]">
+            <template v-slot:default="{ checked }">
+              <view class="flex flex-row">
+                <tm-text label="我已经阅读并同意"></tm-text>
+                <view>
+                  <tm-text
+                    v-bind="item.typeAttrs"
+                    @click.stop="handReadme(item.typeAttrs.url)"
+                  ></tm-text>
+                </view>
+              </view>
+            </template>
+          </tm-checkbox>
         </template>
 
         <!-- 开关 -->
@@ -424,16 +447,6 @@ defineExpose({
         </template>
       </tm-form-item>
     </template>
-    <!-- <tm-checkbox>
-      <template v-slot:default="{ checked }">
-        <view class="flex flex-row">
-          <tm-text label="我已经阅读并同意"></tm-text>
-          <view>
-            <tm-text color="primary" label="《合作协议》"></tm-text>
-          </view>
-        </view>
-      </template>
-    </tm-checkbox> -->
 
     <tm-form-item :border="false">
       <view class="flex flex-row gap-10" v-if="formPros!.formBtns!.length>0">

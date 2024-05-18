@@ -20,12 +20,12 @@ const formVal = ref({
   dateStr: "",
   dateArry: "",
   dateStr2: "",
-
   city: [],
   cityStr: "",
   keyboard: "",
   upload: ["public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png"],
   no: "",
+  readme: null,
 });
 // 数据配置
 const options = ref<FormOptions[]>([
@@ -307,6 +307,7 @@ const options = ref<FormOptions[]>([
     formItemAttrs: {
       desc: "没有label",
       required: true,
+      border: false,
     },
     typeAttrs: {
       color: "primary",
@@ -332,7 +333,6 @@ const options = ref<FormOptions[]>([
     rules: [{ required: true, message: "不能为空" }],
     formItemAttrs: {
       required: true,
-      border: false,
     },
     typeAttrs: {
       color: "primary",
@@ -351,6 +351,17 @@ const options = ref<FormOptions[]>([
           console.log(e);
         },
       },
+    },
+  },
+  {
+    type: "readme",
+    label: "", // 不需要label
+    prop: "readme",
+    rulesHide: true,
+    typeAttrs: {
+      color: "primary",
+      label: "《合作协议/隐私协议》",
+      url: "https://www.baidu.com", // 要跳转的地址
     },
   },
 ]);

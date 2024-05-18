@@ -30,7 +30,10 @@ export const changeProcessing = (data: FormOptions) => {
       msg = "请输入";
       inType = data.type;
       break;
-
+    case "readme":
+      msg = "请勾选";
+      inType = data.type;
+      break;
     default:
       msg = "请选择";
       inType = data.type;
@@ -72,7 +75,8 @@ export const changeRules = (data: FormOptions) => {
     if (data.rules) {
       return data.rules;
     } else {
-      return [{ required: true, message: "必填项不能为空!" }];
+      let message = data.type === "readme" ? "请阅读后勾选协议!" : "必填项不能为空!";
+      return [{ required: true, message }];
     }
   } else {
     return [];

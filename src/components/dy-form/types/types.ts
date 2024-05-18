@@ -1,12 +1,21 @@
 
+interface FormBtns {
+  formType: 'submit' | 'reset',
+  label: string,
+  formBtnAttrs?: any,
+  callback?: () => void,
+}
+interface baseAttrs {
+  callback?: () => void,
 
+}
 export interface FormOptions {
   // 表单项显示的元素
   type: 'input' | 'textarea' | 'password' |
   'number' | 'inputnumber' | 'radio-group' |
   'radio' | 'checkbox-group' | 'checkbox' | 'rate' | 'slider' |
   'segtab' | 'switch' | 'upload' | 'text' | 'icon' | 'calendar' | 'picker' |
-  'city-picker' | 'time-picker' | 'date-picker' | 'time-between' | 'keyboard' | 'year-picker' | 'color-picker' | 'ditor' | 'stepper',
+  'city-picker' | 'time-picker' | 'date-picker' | 'time-between' | 'keyboard' | 'year-picker' | 'color-picker' | 'ditor' | 'stepper' | 'readme'
   // 表单项的值
   value?: any,
   pickerIndex?: string,
@@ -29,7 +38,7 @@ export interface FormOptions {
   // 表单项其他
   formItemAttrs?: any,
   // 表单框项其他
-  typeAttrs?: any,
+  typeAttrs?: baseAttrs | any,
   // 表单组
   formGroupAttrs?: any,
   // 表单组项其他
@@ -43,15 +52,6 @@ export interface FormOptions {
 
 }
 
-
-
-interface FormBtns {
-  formType: 'submit' | 'reset',
-  label: string,
-  formBtnAttrs?: any,
-
-  callback?: () => void,
-}
 export interface FormProps {
   // 表单的值
   model?: any,
