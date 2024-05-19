@@ -144,16 +144,11 @@ const handPicker = (item: FormOptions) => {
     showPicker.value[item.prop!] = !showPicker.value[item.prop!];
   }
 };
-// handReadme
+// 阅读handReadme
 const handReadme = (item: FormOptions) => {
-  if (item.typeAttrs?.callback) {
-    item.typeAttrs.callback(item);
-  } else {
-    // 走默认的跳转页面
-    console.log("🍕走默认的跳转页面 ");
-  }
+  item.typeAttrs?.callback && item.typeAttrs.callback(item);
 };
-// 提交
+// 提交表单
 const confirm = (e: any) => {
   if (e.validate) {
     // 校验通过 抛出表单项目

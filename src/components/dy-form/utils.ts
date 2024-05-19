@@ -73,7 +73,7 @@ export const changeRules = (data: FormOptions) => {
   if (data!.rulesHide!) {
     // 要显示 * 必填
     if (data.rules) {
-      return data.rules;
+      return [{ required: true, message: "必填项不能为空 " }, ...data.rules];
     } else {
       let message = data.type === "readme" ? "请阅读后勾选协议!" : "必填项不能为空!";
       return [{ required: true, message }];
