@@ -8,7 +8,6 @@ import { useAuthStore } from '@/store/authStore';
 import { checkStatus } from '@/utils/http/checkStatus';
 import { Toast } from '@/utils/uniapi/prompt';
 import { assign } from 'lodash-es';
-
 const BASE_URL = getBaseUrl();
 
 const HEADER = {
@@ -44,6 +43,8 @@ const alovaInstance = createAlova({
     );
     console.log('🍌[method]:', method);
   },
+
+
   responsed: {
     /**
      * 请求成功的拦截器

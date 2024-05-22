@@ -7,6 +7,12 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
+  const changeDefaultFileList: typeof import('../src/components/dy-form/utils')['changeDefaultFileList']
+  const changeDisabled: typeof import('../src/components/dy-form/utils')['changeDisabled']
+  const changePlaceholder: typeof import('../src/components/dy-form/utils')['changePlaceholder']
+  const changeProcessing: typeof import('../src/components/dy-form/utils')['changeProcessing']
+  const changeRules: typeof import('../src/components/dy-form/utils')['changeRules']
+  const changeUploadUrl: typeof import('../src/components/dy-form/utils')['changeUploadUrl']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const createPinia: typeof import('pinia')['createPinia']

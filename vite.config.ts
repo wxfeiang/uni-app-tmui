@@ -35,7 +35,12 @@ export default ({ command, mode }: ConfigEnv) => {
             imports: ['createRouter', 'useRouter', 'useRoute'],
           },
         ],
-        dirs: ['src/composables/**/*', 'src/pages/**/*', 'src/subPages/**/*'],
+        dirs: [
+          'src/composables/**/*',
+          'src/pages/**/*',
+          'src/subPages/**/*',
+          'src/components/**/*'
+        ],
         dts: 'typings/auto-imports.d.ts',
         // 解决eslint报错问题
         eslintrc: {
@@ -47,7 +52,7 @@ export default ({ command, mode }: ConfigEnv) => {
       }),
       Components({
         // 可以让我们使用自己定义组件的时候免去 import 的麻烦
-        dirs: ['src/components'], // 默认为 src/components
+        dirs: ["src/components/"],//指定路径，自动导入自定义组件
         dts: 'typings/components.d.ts', // 可以自定义文件生成的位置，默认是根目录下
         extensions: ['vue', 'md', 'jsx', 'ts', 'tsx'], // 配置需要将哪些后缀类型的文件进行自动按需引入
         // 第三方组件库的解析器

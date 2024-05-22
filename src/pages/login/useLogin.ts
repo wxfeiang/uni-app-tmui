@@ -5,7 +5,18 @@ import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
 const authStore = useAuthStore();
 //
+const { send: getcode, data: codeimg, } = captchaImage({
+  immediate: true,
+  initialData: {},
+})
+console.log('🥠[codeimg]:', codeimg, codeimg.value);
 
+
+
+const { send: tesToken, data: authInfo } = testToken({
+  immediate: false, // 默认不发出请求
+  initialData: {},
+});
 
 const loginFrom = ref(<LoginParams>{
   username: 'admin',
@@ -55,10 +66,13 @@ const options = ref<FormOptions[]>([
       transprent: false,
       codeImg: true,
       codeImgAttrs: {
-        htmlcallback: (e: any) => {
-          return codeimg.value.data;
-        },
+        src: 'data:image/svg+xml;base64,',
+        // htmlcallback: (e: any) => {
+        //   console.log('🥟[codeimg.value.data]:', codeimg.value.data);
+        //   return
+        // },
         callback: () => {
+          console.log('🥞====', codeimg);
           getcode();
         }
       },
@@ -110,15 +124,7 @@ const Login = async (form: any) => {
   }
 };
 
-const { send: getcode, data: codeimg }: { send: any; data: any } = captchaImage({
-  immediate: true,
-  initialData: {},
-});
 
-const { send: tesToken, data: authInfo } = testToken({
-  immediate: false, // 默认不发出请求
-  initialData: {},
-});
 const {
   onSuccess: tesFile,
   data: FileData,
