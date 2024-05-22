@@ -9,6 +9,10 @@ import {
   changeRules,
   changeUploadUrl,
 } from "./utils";
+defineOptions({
+  name: "dy-form",
+});
+
 const baseUrl = getEnvValue("VITE_IMG_URL");
 
 const emit = defineEmits<{
@@ -144,16 +148,11 @@ const handPicker = (item: FormOptions) => {
     showPicker.value[item.prop!] = !showPicker.value[item.prop!];
   }
 };
-// handReadme
+// 阅读handReadme
 const handReadme = (item: FormOptions) => {
-  if (item.typeAttrs?.callback) {
-    item.typeAttrs.callback(item);
-  } else {
-    // 走默认的跳转页面
-    console.log("🍕走默认的跳转页面 ");
-  }
+  item.typeAttrs?.callback && item.typeAttrs.callback(item);
 };
-// 提交
+// 提交表单
 const confirm = (e: any) => {
   if (e.validate) {
     // 校验通过 抛出表单项目
@@ -439,21 +438,24 @@ defineExpose({
                   :width="200"
                   :height="50"
                   v-bind="item.typeAttrs.codeImgAttrs"
-                  @click="item.typeAttrs.codeImgAttrs?.callback()"
+                  @click="
+                    item.typeAttrs.codeImgAttrs.callback &&
+                      item.typeAttrs.codeImgAttrs.callback()
+                  "
                 ></tm-image>
               </template>
               <template v-else>
-                <view
-                  v-html="item.typeAttrs.codeImgAttrs!.htmlcallback && item.typeAttrs.codeImgAttrs!.htmlcallback()"
-                  @click="item.typeAttrs.codeImgAttrs!.callback() "
-                ></view>
+                <template @click="item.typeAttrs.codeImgAttrs!.callback() ">
+                  <view
+                    v-html="item.typeAttrs.codeImgAttrs!.htmlcallback && item.typeAttrs.codeImgAttrs.htmlcallback()"
+                  ></view>
+                </template>
               </template>
             </template>
             <template #right v-if="item.typeAttrs.right">
-              <slot
-                :name="item.typeAttrs.slotRightName"
-                @click="item.typeAttrs.codeImgAttrs?.callback()"
-              ></slot>
+              <template @click="item.typeAttrs.codeImgAttrs?.callback()">
+                <slot :name="item.typeAttrs.slotRightName"></slot>
+              </template>
             </template>
             <template #left v-if="item.typeAttrs.left">
               <slot :name="item.typeAttrs.slotLeftName"></slot>
