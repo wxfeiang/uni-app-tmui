@@ -319,15 +319,15 @@ const options = ref<FormOptions[]>([
       transprent: false,
       right: true,
       slotRightName: "dy-inp-right",
-      callback: (e: any) => {
-        console.log("🥝回调函数===");
-        console.log(e);
-      },
+      // callback: (e: any) => {
+      //   console.log("🥝回调函数===");
+      //   console.log(e);
+      // },
     },
   },
   {
     type: "input",
-    label: "gg", // 不需要label
+    label: "", // 不需要label
     prop: "no",
     placeholder: "请输入用户名",
     rules: [{ required: true, message: "不能为空" }],
@@ -342,15 +342,15 @@ const options = ref<FormOptions[]>([
       showClear: true,
       align: "right",
       transprent: false,
-      codeImg: true,
-      codeImgAttrs: {
-        src:
-          "https://ts1.cn.mm.bing.net/th/id/R-C.ccd320596cb9b0499c2d9e89079c7990?rik=bo30tkANeNk4Aw&riu=http%3a%2f%2fwww.finebornchina.cn%2fuploads%2fallimg%2f140430%2f1-140430150445413.jpg&ehk=Hjpp13uPkWtPTUVLZH%2f7V3MKAnXYJJNjmjRq1TE136k%3d&risl=&pid=ImgRaw&r=0",
-        callback: (e: any) => {
-          console.log("🥝回调函数===");
-          console.log(e);
-        },
-      },
+      // codeImg: true,
+      // codeImgAttrs: {
+      //   src:
+      //     "https://ts1.cn.mm.bing.net/th/id/R-C.ccd320596cb9b0499c2d9e89079c7990?rik=bo30tkANeNk4Aw&riu=http%3a%2f%2fwww.finebornchina.cn%2fuploads%2fallimg%2f140430%2f1-140430150445413.jpg&ehk=Hjpp13uPkWtPTUVLZH%2f7V3MKAnXYJJNjmjRq1TE136k%3d&risl=&pid=ImgRaw&r=0",
+      //   callback: (e: any) => {
+      //     console.log("🥝回调函数===");
+      //     console.log(e);
+      //   },
+      // },
     },
   },
   {
@@ -393,7 +393,7 @@ const formPros = ref<FormProps>({
 <template>
   <!-- TODO: 选择的回调  -->
   <tm-app>
-    <dy-from
+    <dy-form
       :options="options"
       v-model:formVal="formVal"
       @submit="submit"
@@ -408,6 +408,6 @@ const formPros = ref<FormProps>({
         <view> 我是底部插槽表单的数据{{ scope.data }} </view>
         <view> 我是底部插槽表单的数据{{ scope.model?.username }} </view>
       </template>
-    </dy-from>
+    </dy-form>
   </tm-app>
 </template>

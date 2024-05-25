@@ -432,19 +432,8 @@ defineExpose({
             :label="item.label"
             v-bind="item.typeAttrs"
           >
-            <template #right v-if="item.typeAttrs.codeImg!">
-              <template v-if="item.typeAttrs.codeImgAttrs!.src">
-                <tm-image
-                  :width="200"
-                  :height="50"
-                  v-bind="item.typeAttrs.codeImgAttrs"
-                  @click="
-                    item.typeAttrs.codeImgAttrs.callback &&
-                      item.typeAttrs.codeImgAttrs.callback()
-                  "
-                ></tm-image>
-              </template>
-              <template v-else>
+            <template #right v-if="item.typeAttrs.html!">
+              <template>
                 <template @click="item.typeAttrs.codeImgAttrs!.callback() ">
                   <view
                     v-html="item.typeAttrs.codeImgAttrs!.htmlcallback && item.typeAttrs.codeImgAttrs.htmlcallback()"
@@ -453,9 +442,7 @@ defineExpose({
               </template>
             </template>
             <template #right v-if="item.typeAttrs.right">
-              <template @click="item.typeAttrs.codeImgAttrs?.callback()">
-                <slot :name="item.typeAttrs.slotRightName"></slot>
-              </template>
+              <slot :name="item.typeAttrs.slotRightName"></slot>
             </template>
             <template #left v-if="item.typeAttrs.left">
               <slot :name="item.typeAttrs.slotLeftName"></slot>
