@@ -1,15 +1,12 @@
 import { FormOptions, FormProps } from "@/components/dy-form/types/types";
 import router from "@/router";
-import { captchaImage, downFile, login, testToken } from '@/services/api/auth';
+import { downFile, login, testToken } from '@/services/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
+const { codeImg, getCodeUrl } = useVerify();
 const authStore = useAuthStore();
-//
-const { send: getcode, data: codeimg, } = captchaImage({
-  immediate: true,
-  initialData: {},
-})
-console.log('🥠[codeimg]:', codeimg, codeimg.value);
+
+
 
 
 
@@ -64,18 +61,8 @@ const options = ref<FormOptions[]>([
       showBottomBotder: false,
       showClear: true,
       transprent: false,
-      codeImg: true,
-      codeImgAttrs: {
-        src: 'data:image/svg+xml;base64,',
-        // htmlcallback: (e: any) => {
-        //   console.log('🥟[codeimg.value.data]:', codeimg.value.data);
-        //   return
-        // },
-        callback: () => {
-          console.log('🥞====', codeimg);
-          getcode();
-        }
-      },
+      right: true,
+      slotRightName: "verify",
     },
   },
   {
@@ -120,7 +107,7 @@ const Login = async (form: any) => {
     authStore.SETTIKEN(token);
     router.push({ name: 'Index' });
   } catch (error) {
-    getcode()
+    getCodeUrl()
   }
 };
 
@@ -138,5 +125,5 @@ tesFile((e: any) => {
 });
 
 export default () => {
-  return { Login, tesToken, loginFrom, options, formPros, authInfo, download, codeimg, getcode };
+  return { Login, tesToken, loginFrom, options, formPros, authInfo, download, codeImg, getCodeUrl };
 };

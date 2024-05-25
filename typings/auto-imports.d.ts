@@ -101,6 +101,7 @@ declare global {
   const useSlots: typeof import('vue')['useSlots']
   const useSource: typeof import('../src/subPages/subUser/source/useSource')['default']
   const useUser: typeof import('../src/pages/user/useUser')['default']
+  const useVerify: typeof import('../src/composables/useVerify')['default']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
