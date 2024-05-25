@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { Login, loginFrom, options, formPros } = useLogin();
+const { Login, loginFrom, options, formPros, codeImg, getCodeUrl } = useLogin();
 </script>
 
 <template>
@@ -11,6 +11,9 @@ const { Login, loginFrom, options, formPros } = useLogin();
       :formPros="formPros"
       ref="dyFromRef"
     >
+      <template #verify>
+        <tm-image :width="200" :height="50" :src="codeImg" @click="getCodeUrl"></tm-image>
+      </template>
     </dy-from>
   </tm-app>
 </template>

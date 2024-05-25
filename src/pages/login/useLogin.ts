@@ -84,14 +84,8 @@ const options = ref<FormOptions[]>([
       showBottomBotder: false,
       showClear: true,
       transprent: false,
-      codeImg: true,
-
-      codeImgAttrs: {
-        src: codeImg.value,
-        callback: () => {
-          getCodeUrl()
-        }
-      },
+      right: true,
+      slotRightName: "verify",
     },
   },
   {
@@ -162,5 +156,5 @@ const Login = async (form: any) => {
 
 
 export default () => {
-  return { Login, loginFrom, options, formPros };
+  return { Login, loginFrom, options, formPros, codeImg, getCodeUrl };
 };
