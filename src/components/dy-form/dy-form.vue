@@ -120,6 +120,7 @@ let initForm = () => {
         // 转换出显示的内容
         // m[item.prop!] = []; //item.typeAttrs.columns.find((i: any) => i.id == cur)?.text ?? "";
       }
+      // 上传图片的处理
       if (item.type === "upload") {
         m[item.prop!] = changeDefaultFileList(props.formVal[item.prop!], baseUrl);
       }

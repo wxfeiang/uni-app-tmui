@@ -119,7 +119,6 @@ export const changeDefaultFileList = (data: string | Array<any>, url: string) =>
   let a: string[] = []
   if (isEmpty(data)) {
     return a
-
   }
   if (isString(data)) {
     a = data.split(",");
@@ -150,10 +149,10 @@ export const changeUploadUrl = (data: Array<any>, url: string) => {
         return i
       } else if (isObject(i)) {
         let f = i as file
-        console.log('🧀[f ]:', f);
+
         if (f.response) {
           let p = JSON.parse(f.response)
-          console.log('🍈[p]:', p);
+
           f.url = p.data.url
         } else if (f.statusCode == 3) {
           f.url = f.url.replace(url, '')

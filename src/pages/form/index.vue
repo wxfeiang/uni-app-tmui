@@ -23,7 +23,12 @@ const formVal = ref({
   city: [],
   cityStr: "",
   keyboard: "",
-  upload: ["public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png"],
+  // upload: [
+  //   "public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png",
+  //   "public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png",
+  // ],
+  upload:
+    "public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png,public/uploads/image/1711870662452-0b2e2976-f237-41f9-8ce0-6c0813b3bf6c.png",
   no: "",
   readme: null,
 });
