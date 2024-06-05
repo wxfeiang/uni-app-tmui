@@ -1,3 +1,4 @@
+import { FooterBtns } from "@/components/dy-footer/types/types";
 import { FormOptions, FormProps } from "@/components/dy-form/types/types";
 import router from "@/router";
 import { downFile, login, testToken } from '@/services/api/auth';
@@ -5,10 +6,6 @@ import { useAuthStore } from '@/store/authStore';
 import { downBuffFile } from '@/utils';
 const { codeImg, getCodeUrl } = useVerify();
 const authStore = useAuthStore();
-
-
-
-
 
 const { send: tesToken, data: authInfo } = testToken({
   immediate: false, // 默认不发出请求
@@ -65,21 +62,21 @@ const options = ref<FormOptions[]>([
       slotRightName: "verify",
     },
   },
-  {
-    type: "readme",
-    label: "", // 不需要label
-    prop: "readme",
-    rulesHide: true,
-    formItemAttrs: {
-      border: false,
-    },
-    typeAttrs: {
+  // {
+  //   type: "readme",
+  //   label: "", // 不需要label
+  //   prop: "readme",
+  //   rulesHide: true,
+  //   formItemAttrs: {
+  //     border: false,
+  //   },
+  //   typeAttrs: {
 
-      color: "primary",
-      label: "《合作协议/隐私协议》",
-      url: "https://www.baidu.com", // 要跳转的地址
-    },
-  },
+  //     color: "primary",
+  //     label: "《合作协议/隐私协议》",
+  //     url: "https://www.baidu.com", // 要跳转的地址
+  //   },
+  // },
 ])
 const formPros = ref<FormProps>({
   formBtns: [
@@ -124,6 +121,20 @@ tesFile((e: any) => {
   downBuffFile(e);
 });
 
+
+
+
+const footerBtns = ref<FooterBtns[]>([
+  {
+    actionType: "next",
+    label: "上一步",
+  },
+  {
+    actionType: "next",
+    label: "下一步",
+  }
+])
+
 export default () => {
-  return { Login, tesToken, loginFrom, options, formPros, authInfo, download, codeImg, getCodeUrl };
+  return { Login, tesToken, loginFrom, options, formPros, authInfo, download, codeImg, getCodeUrl, footerBtns };
 };
